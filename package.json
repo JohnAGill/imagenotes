@@ -4,13 +4,37 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ./src --ext=js",
-    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
     "format:js": "npm run prettier -- \"src/**/*.js\"",
-    "precommit": "lint-staged && npm run lint"
+    "ios": "react-native run-ios",
+    "lint": "eslint ./src --ext=js",
+    "precommit": "lint-staged && npm run lint",
+    "prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "package.json": [
+      "sort-package-json"
+    ],
+    "src/**/*.{ts,tsx,js,jsx,css}": [
+      "npm run prettier --"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "preset": "react-native"
   },
   "dependencies": {
     "react": "16.11.0",
@@ -43,24 +67,5 @@
     "react-test-renderer": "16.11.0",
     "sort-package-json": "^1.41.0",
     "typescript": "^3.8.3"
-  },
-  "jest": {
-    "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  },
-  "lint-staged": {
-    "src/**/*.{ts,tsx,js,jsx,css}": [
-      "npm run prettier --"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
   }
 }
