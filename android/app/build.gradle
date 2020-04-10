@@ -1,6 +1,13 @@
 apply plugin: "com.android.application"
 
-import com.android.build.OutputFile
+import com.android.build.OutputFile 
+
+project.ext.react = [
+  bundleInStaging: true,
+  devDisabledInStaging: true,
+  bundleInRelease: true
+]
+
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -129,7 +136,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.imagenotes"
+        applicationId "com.exorttech.imagenotes"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -143,22 +150,60 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    signingConfigs {
+    signingConfigs { 
+        release {
+          storeFile file("./keyStores/release.keystore")
+          storePassword "DjXZVxafK0ZoaVAAA1/RtDy0F1mWlzjjp8dzOdj+Z2UmvxZZQ6xtA8Qhyb+nGpsnT6yw5X/7GpT/U4e7oQLKdA=="
+          keyAlias "release"
+          keyPassword "9RyafV5fr8WNggtng+2JHs/wGQJP82SWnzIiVSqZOXwI39d6kqop1l+nxUkD0E6XW6o5v9lWnAaHMGfpN+RYqQ=="
+        }
+ 
+        staging {
+          storeFile file("./keyStores/staging.keystore")
+          storePassword "KBbQlKB1FLfSJtUUhMapG6kIXmXYdqZbR/KL3qrhj434iVhbkNtaUqW2k+4yeUYiDYdOe3/xoMvvaKFUw4uRMQ=="
+          keyAlias "staging"
+          keyPassword "fiL3XuhFX7x/X10Tq+oH0mc+FdtRiXzu9YGLFeABnYBRUtn8v0ti2D8uzmET/9bUgNd5vezjj/ZLKPCAZRuCIg=="
+        }
+ 
         debug {
+          storeFile file("./keyStores/debug.keystore")
+          storePassword "WlezoOmHapxkWmRkdvECx9BQlDerfobKlcYDFAlsUF36cOoC6kNddfBaGNp8jYNWA8Eal2oLX96pkItixD/E7g=="
+          keyAlias "debug"
+          keyPassword "aqalrPsCqoU6Txx5VvZDcyAmfg30ZSEB29pElDNFavM6LLAhjQ2QFvUIv7xL73+0Dd7v5V/aCOIgmMfNli/gdA=="
+        }
+
+        debug { 
+            signingConfig signingConfigs.debug 
+            resValue "string", "app_name", "imagenotes Debug" 
+            applicationIdSuffix ".debug"
             storeFile file('debug.keystore')
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
     }
-    buildTypes {
+
+    signingConfigs {
+    }
+    buildTypes { 
+        debug {
+        }
         debug {
             signingConfig signingConfigs.debug
         }
-        release {
+        release { 
+            signingConfig signingConfigs.release 
+            resValue "string", "app_name", "imagenotes"
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
             signingConfig signingConfigs.debug
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        } 
+        staging { 
+            signingConfig signingConfigs.staging 
+            resValue "string", "app_name", "imagenotes Staging" 
+            applicationIdSuffix ".staging"
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
