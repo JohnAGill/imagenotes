@@ -1,15 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {StyleSheet, View} from 'react-native'
 import {Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text} from 'native-base'
-
 import _ from 'lodash'
 
+import {UserContext} from '../../context/userContext'
 export default (props: any) => {
+  const {signUpWithEmailAndPassword} = useContext(UserContext)
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  let passwordRef = null
-  let emailRef = null
+  let passwordRef: any = null
+  let emailRef: any = null
+
+  const handleSignUp = async () => {
+    try {
+      await signUpWithEmailAndPassword(email, password)
+      props.history.push('/')
+    } catch (error) {
+      return null
+    }
+  }
+
   return (
     <>
       <Container style={styles.container}>
@@ -56,10 +67,10 @@ export default (props: any) => {
               height: '100%',
             }}>
             <Button
+              onPress={() => handleSignUp()}
               style={{
                 width: 100,
                 alignSelf: 'center',
-                justifySelf: 'flex-end',
               }}>
               <Text>Sign Up</Text>
             </Button>
