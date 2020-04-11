@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "format:js": "npm run prettier:fix -- \"src/**/*.{ts,tsx,js,jsx,css}\"",
+    "format:js": "npm run prettier -- \"src/**/*.{ts,tsx,js,jsx,css}\"",
     "postinstall": "react-native-schemes-manager all",
     "ios": "react-native run-ios",
     "lint": "eslint ./src --ext={tsx,ts}",
-    "lint:fix": "eslint ./src --ext={tsx,ts} --fix",
+    "lint:fix": "eslint ./src --ext=tsx, --fix",
     "precommit": "lint-staged && npm run lint",
-    "prettier:fix": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
+    "prettier": "prettier --single-quote --trailing-comma all --print-width 180 --write",
     "start": "react-native start",
     "test": "jest"
   },
@@ -24,7 +24,7 @@
       "sort-package-json"
     ],
     "src/**/*.{ts,tsx,js,jsx,css}": [
-      "yarn prettier:fix"
+      "yarn lint:fix --"
     ]
   },
   "jest": {
@@ -65,6 +65,7 @@
     "babel-jest": "^24.9.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",

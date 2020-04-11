@@ -12,6 +12,31 @@ import UserProvider from './src/context/userContext';
 import NotesProvider from './src/context/notesContext';
 import auth from '@react-native-firebase/auth';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    fontSize: 20,
+  },
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+  },
+  subNavItem: {
+    padding: 5,
+  },
+  topic: {
+    textAlign: 'center',
+    fontSize: 15,
+  },
+});
+
 const App = (props: any) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -88,30 +113,5 @@ const App = (props: any) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    fontSize: 20,
-  },
-  nav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  navItem: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-  },
-  subNavItem: {
-    padding: 5,
-  },
-  topic: {
-    textAlign: 'center',
-    fontSize: 15,
-  },
-});
 
 export default App;
