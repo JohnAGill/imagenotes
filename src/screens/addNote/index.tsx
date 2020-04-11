@@ -1,8 +1,9 @@
-import React, {useContext} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
 // @ts-ignore
 import DoneButton from 'react-native-keyboard-done-button';
-import {NotesContext} from '../../context/notesContext';
+import { History } from 'history';
+import { NotesContext } from '../../context/notesContext';
 
 const styles = StyleSheet.create({
   input: {
@@ -19,10 +20,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props: any) => {
-  const {note, updateNote, addNewNote} = useContext(NotesContext);
+interface AddNoteProps {
+  history: History;
+}
 
-  const handleAddNote = (newNote: string) => {
+export default (props: AddNoteProps) => {
+  const { note, updateNote, addNewNote } = useContext(NotesContext);
+
+  const handleAddNote = (newNote: string): void => {
     addNewNote(newNote);
     updateNote('');
     props.history.goBack();
@@ -30,8 +35,8 @@ export default (props: any) => {
 
   return (
     <>
-      <TextInput style={styles.input} multiline numberOfLines={2} onChangeText={(text: string) => updateNote(text)} value={note} />
-      <DoneButton onPress={() => handleAddNote(note)} style={styles.doneButton} />
+      <TextInput style={styles.input} multiline numberOfLines={2} onChangeText={(text: string): void => updateNote(text)} value={note} />
+      <DoneButton onPress={(): void => handleAddNote(note)} style={styles.doneButton} />
     </>
   );
 };

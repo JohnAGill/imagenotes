@@ -1,8 +1,10 @@
-import React, {useContext} from 'react';
-import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import _ from 'lodash';
-import {PictureContext} from '../../context/pictureContext';
-import {NotesContext} from '../../context/notesContext';
+import { History } from 'history';
+import { PictureContext } from '../../context/pictureContext';
+import { NotesContext, NoteType } from '../../context/notesContext';
+import Note from '../../components/note';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,20 +36,24 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props: any) => {
-  const {picture} = useContext(PictureContext);
-  const {notes, updateNotes, updateLocation} = useContext(NotesContext);
-  const handleImagePressed = (e: any) => {
-    updateLocation({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY});
-    props.history.push('/addNote', [{x: e.nativeEvent.locationX, y: e.nativeEvent.locationY}]);
+interface ViewPictureProps {
+  history: History;
+}
+
+export default (props: ViewPictureProps) => {
+  const { picture } = useContext(PictureContext);
+  const { notes, updateNotes, updateLocation } = useContext(NotesContext);
+  const handleImagePressed = (e: NativeSyntheticEvent<NativeTouchEvent>): void => {
+    updateLocation({ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY });
+    return props.history.push('/addNote', [{ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY }]);
   };
 
   const handleShowNote = (index: number) => {
-    const updatedNotes = _.map(notes, (note: any, i: number) => {
+    const updatedNotes = _.map(notes, (note: NoteType, i: number) => {
       if (i === index) {
         return {
           ...note,
-          text: !note.text,
+          text: !note.display,
         };
       }
       return note;
@@ -55,65 +61,25 @@ export default (props: any) => {
     updateNotes(updatedNotes);
   };
 
-  const showNotes = () => {
-    return _.map(notes, (note: any, index: number) => {
-      if (note.text) {
-        return (
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: note.location.y,
-              left: note.location.x,
-              borderColor: 'white',
-              borderWidth: 2,
-              borderStyle: 'solid',
-              borderRadius: 30,
-              paddingLeft: 10,
-              paddingTop: 4,
-            }}
-            onPress={() => handleShowNote(index)}>
-            <Text style={{color: 'white'}}>{note.value}</Text>
-          </TouchableOpacity>
-        );
-      }
-      return (
-        <TouchableOpacity
-          style={{
-            width: 30,
-            height: 30,
-            position: 'absolute',
-            top: note.location.y,
-            left: note.location.x,
-            borderColor: 'white',
-            borderWidth: 2,
-            borderStyle: 'solid',
-            borderRadius: 30,
-            paddingLeft: 10,
-            paddingTop: 4,
-          }}
-          onPress={() => handleShowNote(index)}>
-          <Text style={{color: 'white'}}>{index + 1}</Text>
-        </TouchableOpacity>
-      );
-    });
-  };
   return (
     <>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.container} onPress={(e: any) => handleImagePressed(e)}>
-          <ImageBackground style={styles.preview} source={{uri: picture}}>
-            {showNotes()}
+        <TouchableOpacity style={styles.container} onPress={(e: NativeSyntheticEvent<NativeTouchEvent>) => handleImagePressed(e)}>
+          <ImageBackground style={styles.preview} source={{ uri: picture }}>
+            {_.map(notes, (note: NoteType, index: number): any => (
+              <Note note={note} index={index} onPress={handleShowNote} />
+            ))}
             <View
               style={{
                 flex: 0,
                 justifyContent: 'center',
               }}>
-              <Text style={{color: 'white'}}>Tap to add a note wherever you want</Text>
+              <Text style={{ color: 'white' }}>Tap to add a note wherever you want</Text>
               <TouchableOpacity
                 style={styles.capture}
-                onPress={() => {
+                onPress={(): void => {
                   updateNotes([]);
-                  props.history.goBack();
+                  return props.history.goBack();
                 }}>
                 <Text>Go Back</Text>
               </TouchableOpacity>

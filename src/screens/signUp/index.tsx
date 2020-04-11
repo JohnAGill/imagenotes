@@ -1,8 +1,9 @@
-import React, {useState, useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text} from 'native-base';
-import {GoogleSigninButton} from '@react-native-community/google-signin';
-import {UserContext} from '../../context/userContext';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, TextInputChangeEventData, NativeSyntheticEvent } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text } from 'native-base';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
+import { History } from 'history';
+import { UserContext } from '../../context/userContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,14 +26,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props: any) => {
-  const {signUpWithEmailAndPassword, onGoogleSignIn} = useContext(UserContext);
+interface SignUpProps {
+  history: History;
+}
+
+export default (props: SignUpProps) => {
+  const { signUpWithEmailAndPassword, onGoogleSignIn } = useContext(UserContext);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   let passwordRef: any = null;
   let emailRef: any = null;
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (): Promise<void | null> => {
     try {
       await signUpWithEmailAndPassword(email, password);
       return props.history.push('/');
@@ -41,11 +46,10 @@ export default (props: any) => {
     }
   };
 
-  const handleGoogleSignUp = async () => {
-    console.log('here');
+  const handleGoogleSignUp = async (): Promise<void | null> => {
     try {
       await onGoogleSignIn();
-      props.history.push('/');
+      return props.history.push('/');
     } catch (error) {
       return null;
     }
@@ -65,32 +69,32 @@ export default (props: any) => {
               <Label>Email</Label>
               <Input
                 ref={emailRef}
-                getRef={(input) => {
+                getRef={(input: any) => {
                   emailRef = input;
                 }}
                 keyboardType="email-address"
                 onSubmitEditing={() => passwordRef._root.focus()}
                 returnKeyType="next"
-                onChange={(e: any) => setEmail(e.nativeEvent.text)}
+                onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => setEmail(e.nativeEvent.text)}
               />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
               <Input
-                getRef={(input) => {
+                getRef={(input: any) => {
                   passwordRef = input;
                 }}
                 returnKeyType="done"
                 secureTextEntry
-                onChange={(e: any) => setPassword(e.nativeEvent.text)}
+                onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => setPassword(e.nativeEvent.text)}
               />
             </Item>
           </Form>
           <View style={styles.buttonContainer}>
-            <Button onPress={() => handleSignUp()} style={styles.button}>
+            <Button onPress={(): Promise<void | null> => handleSignUp()} style={styles.button}>
               <Text>Sign Up</Text>
             </Button>
-            <GoogleSigninButton onPress={() => handleGoogleSignUp()} style={[styles.button && styles.googleButton]} size={GoogleSigninButton.Size.Wide} />
+            <GoogleSigninButton onPress={(): Promise<void | null> => handleGoogleSignUp()} style={[styles.button && styles.googleButton]} size={GoogleSigninButton.Size.Wide} />
           </View>
         </Content>
       </Container>

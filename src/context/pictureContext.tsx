@@ -1,8 +1,8 @@
-import React, {createContext, useState} from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 
 interface PictureContext {
   picture: string;
-  addPicture: (value: string) => any;
+  addPicture: (value: string) => void;
 }
 
 export const PictureContext = createContext<PictureContext>({
@@ -10,12 +10,16 @@ export const PictureContext = createContext<PictureContext>({
   addPicture: () => console.log(''),
 });
 
-const PictureProvider = ({children}: any) => {
+type PictureProvider = {
+  children: ReactNode;
+};
+
+const PictureProvider = ({ children }: PictureProvider) => {
   const [picture, setPicture] = useState<string>('');
   const addPicture = (pictureToAdd: string) => {
     setPicture(pictureToAdd);
   };
-  return <PictureContext.Provider value={{picture, addPicture}}>{children}</PictureContext.Provider>;
+  return <PictureContext.Provider value={{ picture, addPicture }}>{children}</PictureContext.Provider>;
 };
 
 export default PictureProvider;

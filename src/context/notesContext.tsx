@@ -1,11 +1,11 @@
-import React, {createContext, useState} from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 
 type Location = {
   x: number;
   y: number;
 };
 
-type Note = {
+export type NoteType = {
   value: string;
   index: number;
   location: Location;
@@ -14,13 +14,17 @@ type Note = {
 
 interface NotesContext {
   note: string;
-  notes: Note[];
-  updateNote: (value: string) => any;
+  notes: NoteType[];
+  updateNote: (value: string) => void;
   location: Location;
-  updateLocation: (value: any) => any;
-  addNewNote: (value: string) => any;
-  updateNotes: (value: any) => any;
+  updateLocation: (value: Location) => void;
+  addNewNote: (value: string) => void;
+  updateNotes: (value: NoteType[]) => void;
 }
+
+type NotesProvider = {
+  children: ReactNode;
+};
 
 export const NotesContext = createContext<NotesContext>({
   note: '',
@@ -30,34 +34,32 @@ export const NotesContext = createContext<NotesContext>({
     x: 0,
     y: 0,
   },
-  updateLocation: (value: any) => value,
+  updateLocation: (value: Location) => value,
   addNewNote: (value: string) => value,
-  updateNotes: (value: any) => value,
+  updateNotes: (value: NoteType[]) => value,
 });
 
-const NotesProvider = ({children}: any) => {
+const NotesProvider = ({ children }: NotesProvider) => {
   const [note, setNote] = useState<string>('');
-  const [notes, setNotes] = useState<any>([]);
-  const [location, setLocation] = useState<any>({x: 0, y: 0});
+  const [notes, setNotes] = useState<NoteType[]>([]);
+  const [location, setLocation] = useState<Location>({ x: 0, y: 0 });
   const updateNote = (value: string) => {
     setNote(value);
   };
-  const updateLocation = (coords: any) => {
+  const updateLocation = (coords: Location) => {
     setLocation(coords);
   };
   const addNewNote = (noteText: string) => {
-    console.log(location);
     const newNote = {
       value: noteText,
       location: location,
       display: false,
       index: notes.length,
     };
-    console.log(newNote);
     setNotes([...notes, newNote]);
   };
 
-  const updateNotes = (newNotes: any) => {
+  const updateNotes = (newNotes: NoteType[]) => {
     setNotes(newNotes);
   };
   return (

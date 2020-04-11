@@ -1,7 +1,8 @@
-import React, {useContext} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {RNCamera} from 'react-native-camera';
-import {PictureContext} from '../../context/pictureContext';
+import React, { useContext } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { RNCamera, Constants } from 'react-native-camera';
+import { History } from 'history';
+import { PictureContext } from '../../context/pictureContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,24 +42,31 @@ const styles = StyleSheet.create({
   },
 });
 
-// @ts-ignore
-export default (props: any) => {
-  const {addPicture} = useContext(PictureContext);
-  const takePicture = async function (camera: any) {
-    const options = {quality: 0.5, base64: true};
+interface TakePictureProps {
+  history: History;
+}
+
+type CameraType = {
+  camera: RNCamera;
+};
+
+export default (props: TakePictureProps) => {
+  const { addPicture } = useContext(PictureContext);
+  const takePicture = async (camera: RNCamera): Promise<void> => {
+    const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     addPicture(data.uri);
-    props.history.push('/viewPicture');
+    return props.history.push('/viewPicture');
   };
 
   return (
     <>
       <View style={styles.container}>
         <RNCamera style={styles.preview} type={RNCamera.Constants.Type.back}>
-          {({camera}: any) => {
+          {({ camera }: CameraType) => {
             return (
               <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
+                <TouchableOpacity onPress={(): Promise<void> => takePicture(camera)} style={styles.capture}>
                   <Text style={styles.buttonText}> SNAP </Text>
                 </TouchableOpacity>
               </View>
