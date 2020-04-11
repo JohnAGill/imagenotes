@@ -7,7 +7,7 @@
     "format:js": "npm run prettier -- \"src/**/*.{ts,tsx,js,jsx,css}\"",
     "postinstall": "react-native-schemes-manager all",
     "ios": "react-native run-ios",
-    "lint": "eslint ./src --ext={tsx,ts}",
+    "lint": "eslint ./src --ext=tsx",
     "lint:fix": "eslint ./src --ext=tsx, --fix",
     "precommit": "lint-staged && npm run lint",
     "prettier": "prettier --single-quote --trailing-comma all --print-width 180 --write",
