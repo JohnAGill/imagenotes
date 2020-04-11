@@ -1,117 +1,70 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {NativeRouter, Route, Link} from 'react-router-native';
+import {Icon} from 'native-base';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import TakePicture from './src/screens/takePicture';
+import AddNote from './src/screens/addNote';
+import ViewPicture from './src/screens/viewPicture';
+import PictureProvider from './src/context/pictureContext';
+import NotesProvider from './src/context/notesContext';
 
-declare var global: {HermesInternal: null | {}};
-
-const App = () => {
+const App = (props: any) => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
+      <PictureProvider>
+        <NotesProvider>
+          <NativeRouter>
+            <View style={styles.container}>
+              <Route exact path="/" component={TakePicture} />
+              <Route exact path="/viewPicture" component={ViewPicture} />
+              <Route
+                exact
+                path="/addNote"
+                render={(props: any) => {
+                  return (
+                    <AddNote
+                      history={props.history}
+                      postion={props.location.state[0]}
+                    />
+                  );
+                }}
+              />
+              <View style={styles.nav}>
+                <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
+                  <Icon name="camera" />
+                </Link>
+              </View>
             </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </NativeRouter>
+        </NotesProvider>
+      </PictureProvider>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  header: {
+    fontSize: 20,
   },
-  body: {
-    backgroundColor: Colors.white,
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  subNavItem: {
+    padding: 5,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  topic: {
+    textAlign: 'center',
+    fontSize: 15,
   },
 });
 
