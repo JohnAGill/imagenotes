@@ -1,42 +1,88 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {NativeRouter, Route, Link} from 'react-router-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
+import {NativeRouter, Route, Link, Redirect} from 'react-router-native';
 import {Icon} from 'native-base';
 
 import TakePicture from './src/screens/takePicture';
 import AddNote from './src/screens/addNote';
 import ViewPicture from './src/screens/viewPicture';
+import SignUp from './src/screens/signUp';
 import PictureProvider from './src/context/pictureContext';
+import UserProvider from './src/context/userContext';
 import NotesProvider from './src/context/notesContext';
+import auth from '@react-native-firebase/auth';
 
 const App = (props: any) => {
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return <Text>this is working</Text>;
+
+  function PrivateRoute({component: Component, ...rest}: any) {
+    return (
+      <Route
+        {...rest}
+        render={(props: any) =>
+          user ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: '/signUp',
+                state: {from: props.location},
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
+
   return (
     <>
       <PictureProvider>
         <NotesProvider>
-          <NativeRouter>
-            <View style={styles.container}>
-              <Route exact path="/" component={TakePicture} />
-              <Route exact path="/viewPicture" component={ViewPicture} />
-              <Route
-                exact
-                path="/addNote"
-                render={(props: any) => {
-                  return (
-                    <AddNote
-                      history={props.history}
-                      postion={props.location.state[0]}
-                    />
-                  );
-                }}
-              />
-              <View style={styles.nav}>
-                <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
-                  <Icon name="camera" />
-                </Link>
+          <UserProvider>
+            <NativeRouter>
+              <View style={styles.container}>
+                <Route exact path="/signUp" component={SignUp} />
+                <PrivateRoute exact path="/" component={TakePicture} />
+                <PrivateRoute
+                  exact
+                  path="/viewPicture"
+                  component={ViewPicture}
+                />
+                <PrivateRoute
+                  exact
+                  path="/addNote"
+                  render={(props: any) => {
+                    return (
+                      <AddNote
+                        history={props.history}
+                        postion={props.location.state[0]}
+                      />
+                    );
+                  }}
+                />
+                <View style={styles.nav}>
+                  <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
+                    <Icon name="camera" />
+                  </Link>
+                </View>
               </View>
-            </View>
-          </NativeRouter>
+            </NativeRouter>
+          </UserProvider>
         </NotesProvider>
       </PictureProvider>
     </>
