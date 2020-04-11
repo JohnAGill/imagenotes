@@ -10,7 +10,7 @@ interface UserContext {
 
 export const UserContext = createContext<UserContext>({
   signUpError: null,
-  signUpWithEmailAndPassword: (email: string, password: string) => null,
+  signUpWithEmailAndPassword: () => null,
   onGoogleSignIn: () => null,
 })
 

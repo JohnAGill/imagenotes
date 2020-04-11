@@ -1,12 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
-import _ from 'lodash'
 import {RNCamera} from 'react-native-camera'
 import {PictureContext} from '../../context/pictureContext'
 
 // @ts-ignore
 export default (props: any) => {
-  const {picture, addPicture} = useContext(PictureContext)
+  const {addPicture} = useContext(PictureContext)
   const takePicture = async function (camera: any) {
     const options = {quality: 0.5, base64: true}
     const data = await camera.takePictureAsync(options)
@@ -20,14 +19,9 @@ export default (props: any) => {
         <RNCamera style={styles.preview} type={RNCamera.Constants.Type.back}>
           {({camera}: any) => {
             return (
-              <View
-                style={{
-                  flex: 0,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
-                  <Text style={{fontSize: 14}}> SNAP </Text>
+                  <Text style={styles.buttonText}> SNAP </Text>
                 </TouchableOpacity>
               </View>
             )
@@ -65,5 +59,13 @@ const styles = StyleSheet.create({
   },
   tempDisplay: {
     flex: 1,
+  },
+  buttonContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 14,
   },
 })

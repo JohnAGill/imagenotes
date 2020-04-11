@@ -1,12 +1,10 @@
 import React, {useState, useContext} from 'react'
 import {StyleSheet, View} from 'react-native'
 import {Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text} from 'native-base'
-import _ from 'lodash'
 import {GoogleSigninButton} from '@react-native-community/google-signin'
 import {UserContext} from '../../context/userContext'
 export default (props: any) => {
   const {signUpWithEmailAndPassword, onGoogleSignIn} = useContext(UserContext)
-  const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   let passwordRef: any = null
@@ -42,10 +40,6 @@ export default (props: any) => {
         <Content contentContainerStyle={styles.container}>
           <Form>
             <Item floatingLabel>
-              <Label>Username</Label>
-              <Input onSubmitEditing={() => emailRef._root.focus()} returnKeyType="next" onChange={(e: any) => setUserName(e.nativeEvent.text)} />
-            </Item>
-            <Item floatingLabel>
               <Label>Email</Label>
               <Input
                 ref={emailRef}
@@ -70,20 +64,11 @@ export default (props: any) => {
               />
             </Item>
           </Form>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              height: '100%',
-            }}>
-            <Button
-              onPress={() => handleSignUp()}
-              style={{
-                alignSelf: 'center',
-              }}>
+          <View style={styles.buttonContainer}>
+            <Button onPress={() => handleSignUp()} style={styles.button}>
               <Text>Sign Up</Text>
             </Button>
-            <GoogleSigninButton onPress={() => handleGoogleSignUp()} style={{width: 192, height: 48, alignSelf: 'center'}} size={GoogleSigninButton.Size.Wide} />
+            <GoogleSigninButton onPress={() => handleGoogleSignUp()} style={[styles.button && styles.googleButton]} size={GoogleSigninButton.Size.Wide} />
           </View>
         </Content>
       </Container>
@@ -97,5 +82,17 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     backgroundColor: 'white',
+  },
+  button: {
+    alignSelf: 'center',
+  },
+  googleButton: {
+    width: 192,
+    height: 48,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    height: '100%',
   },
 })

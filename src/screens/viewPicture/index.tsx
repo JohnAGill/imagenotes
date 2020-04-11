@@ -1,33 +1,16 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from 'react-native'
 import _ from 'lodash'
 import {PictureContext} from '../../context/pictureContext'
 import {NotesContext} from '../../context/notesContext'
 
-// @ts-ignore
 export default (props: any) => {
   const {picture} = useContext(PictureContext)
   const {notes, updateNotes, updateLocation} = useContext(NotesContext)
-  const [inputVisable, setInputVisable] = useState(false)
-  const [noteValue, setNoteValue] = useState('')
   const handleImagePressed = (e: any) => {
     updateLocation({x: e.nativeEvent.locationX, y: e.nativeEvent.locationY})
     props.history.push('/addNote', [{x: e.nativeEvent.locationX, y: e.nativeEvent.locationY}])
   }
-
-  /* const handleAddNote = () => {
-    setNotes([
-      ...notes,
-      {
-        value: noteValue,
-        x: position.x,
-        y: position.y,
-        text: false,
-      },
-    ]);
-    setInputVisable(false);
-    setNoteValue('');
-  }; */
 
   const handleShowNote = (index: number) => {
     const updatedNotes = _.map(notes, (note: any, i: number) => {

@@ -1,6 +1,5 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import {StyleSheet, TextInput} from 'react-native'
-import _ from 'lodash'
 // @ts-ignore
 import DoneButton from 'react-native-keyboard-done-button'
 import {NotesContext} from '../../context/notesContext'
@@ -8,8 +7,8 @@ import {NotesContext} from '../../context/notesContext'
 export default (props: any) => {
   const {note, updateNote, addNewNote} = useContext(NotesContext)
 
-  const handleAddNote = (note: string) => {
-    addNewNote(note)
+  const handleAddNote = (newNote: string) => {
+    addNewNote(newNote)
     updateNote('')
     props.history.goBack()
   }
