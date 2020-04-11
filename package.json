@@ -4,14 +4,14 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "format:js": "npm run prettier -- \"src/**/*.{ts,tsx,js,jsx,css}\"",
+    "format:js": "npm run prettier:fix -- \"src/**/*.{ts,tsx,js,jsx,css}\"",
     "postinstall": "react-native-schemes-manager all",
     "ios": "react-native run-ios",
     "lint": "eslint ./src --ext={tsx,ts}",
     "lint:fix": "eslint ./src --ext={tsx,ts} --fix",
     "precommit": "lint-staged && npm run lint",
+    "prettier:fix": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
     "start": "react-native start",
-    "tes:prettier": "prettier --single-quote --trailing-comma all --no-semi --print-width 180 --write",
     "test": "jest"
   },
   "husky": {
@@ -24,7 +24,7 @@
       "sort-package-json"
     ],
     "src/**/*.{ts,tsx,js,jsx,css}": [
-      "yarn tes:prettier"
+      "yarn prettier:fix"
     ]
   },
   "jest": {

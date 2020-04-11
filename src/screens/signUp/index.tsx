@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native'
 import {Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text} from 'native-base'
 import {GoogleSigninButton} from '@react-native-community/google-signin'
 import {UserContext} from '../../context/userContext'
+
 export default (props: any) => {
   const {signUpWithEmailAndPassword, onGoogleSignIn} = useContext(UserContext)
   const [password, setPassword] = useState('')
@@ -59,7 +60,7 @@ export default (props: any) => {
                   passwordRef = input
                 }}
                 returnKeyType="done"
-                secureTextEntry={true}
+                secureTextEntry
                 onChange={(e: any) => setPassword(e.nativeEvent.text)}
               />
             </Item>
