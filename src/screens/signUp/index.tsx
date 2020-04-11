@@ -2,10 +2,10 @@ import React, {useState, useContext} from 'react'
 import {StyleSheet, View} from 'react-native'
 import {Container, Header, Content, Form, Item, Input, Label, Body, Title, Button, Text} from 'native-base'
 import _ from 'lodash'
-
+import {GoogleSigninButton} from '@react-native-community/google-signin'
 import {UserContext} from '../../context/userContext'
 export default (props: any) => {
-  const {signUpWithEmailAndPassword} = useContext(UserContext)
+  const {signUpWithEmailAndPassword, onGoogleSignIn} = useContext(UserContext)
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
@@ -15,6 +15,16 @@ export default (props: any) => {
   const handleSignUp = async () => {
     try {
       await signUpWithEmailAndPassword(email, password)
+      props.history.push('/')
+    } catch (error) {
+      return null
+    }
+  }
+
+  const handleGoogleSignUp = async () => {
+    console.log('here')
+    try {
+      await onGoogleSignIn()
       props.history.push('/')
     } catch (error) {
       return null
@@ -69,11 +79,11 @@ export default (props: any) => {
             <Button
               onPress={() => handleSignUp()}
               style={{
-                width: 100,
                 alignSelf: 'center',
               }}>
               <Text>Sign Up</Text>
             </Button>
+            <GoogleSigninButton onPress={() => handleGoogleSignUp()} style={{width: 192, height: 48, alignSelf: 'center'}} size={GoogleSigninButton.Size.Wide} />
           </View>
         </Content>
       </Container>

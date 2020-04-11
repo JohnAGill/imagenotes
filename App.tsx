@@ -29,11 +29,11 @@ const App = (props: any) => {
 
   if (initializing) return <Text>this is working</Text>;
 
-  function PrivateRoute({component: Component, ...rest}) {
+  function PrivateRoute({component: Component, ...rest}: any) {
     return (
       <Route
         {...rest}
-        render={(props) =>
+        render={(props: any) =>
           user ? (
             <Component {...props} />
           ) : (
