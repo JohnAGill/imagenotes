@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+@import Firebase;
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -43,6 +44,19 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  NSString *filePath = NULL;
+  printf(ENVIRONMENT);
+  if([@"DEBUG" isEqualToString: ENVIRONMENT]){
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-debug" ofType:@"plist"];
+  }
+  else if([@"STAGING" isEqualToString: ENVIRONMENT]){
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-staging" ofType:@"plist"];
+  }
+  else {
+    filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info-release" ofType:@"plist"];
+  }
+  FIROptions *options = [[FIROptions alloc] initWithContentsOfFile:filePath];
+  [FIRApp configureWithOptions:options];
   return YES;
 }
 

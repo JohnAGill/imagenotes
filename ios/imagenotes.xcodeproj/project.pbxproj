@@ -25,6 +25,7 @@
 		38C68ED8E841478EB29088C5 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBF65CA41FA149DEAE42A271 /* Foundation.ttf */; };
 		3BA80B89B2B54D3BBBA93F38 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 796838BC80934380AB19926D /* Entypo.ttf */; };
 		3F830404F1464A4C9D82C952 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC94311C55D44236A2A8954F /* AntDesign.ttf */; };
+		52FCA3942441F17A008604C3 /* GoogleService-Info-debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52FCA3932441F17A008604C3 /* GoogleService-Info-debug.plist */; };
 		5906D24B063142398BE6073C /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3E804F7C106B4BE28E65C7F8 /* FontAwesome5_Brands.ttf */; };
 		5E1BC1B5C1755E4DE776AEBB /* libPods-imagenotes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC427AF620F61DF778ABDA1 /* libPods-imagenotes-tvOS.a */; };
 		6B8CA87FFA5841E090E5B806 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC15793847D44A2FBE70473B /* SimpleLineIcons.ttf */; };
@@ -84,6 +85,7 @@
 		3D040250221AE3F3EA088614 /* libPods-imagenotes-imagenotesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-imagenotes-imagenotesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E804F7C106B4BE28E65C7F8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		4CF0C6ECF155EBD1D3AE3B9A /* Pods-imagenotes-tvOS.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imagenotes-tvOS.staging.xcconfig"; path = "Target Support Files/Pods-imagenotes-tvOS/Pods-imagenotes-tvOS.staging.xcconfig"; sourceTree = "<group>"; };
+		52FCA3932441F17A008604C3 /* GoogleService-Info-debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-debug.plist"; sourceTree = "<group>"; };
 		54152B0988AE409E9DB28080 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		5D609CA2F588452CB7EADEC7 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		62BDE77102D859DE085D6109 /* Pods-imagenotes-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-imagenotes-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-imagenotes-tvOSTests/Pods-imagenotes-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				52FCA3932441F17A008604C3 /* GoogleService-Info-debug.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -431,6 +434,7 @@
 				92A4A6058C33448AA38BBD91 /* Roboto_medium.ttf in Resources */,
 				166BB62A4BE24562A8B30534 /* Roboto.ttf in Resources */,
 				0E08AE73E16A4662AD8F7DEB /* rubicon-icon-font.ttf in Resources */,
+				52FCA3942441F17A008604C3 /* GoogleService-Info-debug.plist in Resources */,
 				6B8CA87FFA5841E090E5B806 /* SimpleLineIcons.ttf in Resources */,
 				15A0CB18290340CFB7F57C9E /* Zocial.ttf in Resources */,
 			);
@@ -739,12 +743,13 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes.debug;
 				PRODUCT_NAME = imagenotes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				t = "";
 			};
 			name = Debug;
 		};
@@ -771,6 +776,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				t = "";
 			};
 			name = Release;
 		};
@@ -934,6 +940,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes.staging;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1006,11 +1013,12 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes.staging;
 				PRODUCT_NAME = imagenotes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
+				t = "";
 			};
 			name = Staging;
 		};
@@ -1127,6 +1135,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.exorttech.imagenotes;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

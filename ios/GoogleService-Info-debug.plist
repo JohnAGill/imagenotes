@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>324497914115-egh299esrk0khr8qccvhok603s3maii5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.324497914115-egh299esrk0khr8qccvhok603s3maii5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBeYmLpy8Vmd_khxi_Uo8aBdEvz7PNoVEk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>324497914115</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.exorttech.imagenotes.debug</string>
+	<key>PROJECT_ID</key>
+	<string>imagenotes-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>imagenotes-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:324497914115:ios:10226a291962da39255136</string>
+	<key>DATABASE_URL</key>
+	<string>https://imagenotes-dev.firebaseio.com</string>
+</dict>
+</plist>

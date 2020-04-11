@@ -6,6 +6,7 @@ import {Icon} from 'native-base';
 import TakePicture from './src/screens/takePicture';
 import AddNote from './src/screens/addNote';
 import ViewPicture from './src/screens/viewPicture';
+import SignUp from './src/screens/signUp';
 import PictureProvider from './src/context/pictureContext';
 import NotesProvider from './src/context/notesContext';
 
@@ -16,7 +17,7 @@ const App = (props: any) => {
         <NotesProvider>
           <NativeRouter>
             <View style={styles.container}>
-              <Route exact path="/" component={TakePicture} />
+              <Route exact path="/" component={SignUp} />
               <Route exact path="/viewPicture" component={ViewPicture} />
               <Route
                 exact
