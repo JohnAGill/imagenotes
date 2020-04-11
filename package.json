@@ -38,8 +38,15 @@
     "preset": "react-native"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/react-router-native": "^5.1.0",
+    "lodash": "^4.17.15",
+    "native-base": "^2.13.12",
     "react": "16.11.0",
-    "react-native": "0.62.2"
+    "react-native": "0.62.2",
+    "react-native-camera": "^3.22.1",
+    "react-native-keyboard-done-button": "https://github.com/JohnAGill/react-native-keyboard-done-button",
+    "react-router-native": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
