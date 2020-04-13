@@ -32,23 +32,27 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props: any) => {
-  const { signUpWithEmailAndPassword, onGoogleSignIn } = useContext(UserContext);
+interface LoginProps {
+  history: History;
+}
+
+export default (props: LoginProps) => {
+  const { loginWithEmailAndPassword, onGoogleSignIn } = useContext(UserContext);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   let passwordRef: any = null;
   let emailRef: any = null;
 
-  const handleSignUp = async (): Promise<void | null> => {
+  const handleLogin = async (): Promise<void | null> => {
     try {
-      await signUpWithEmailAndPassword(email, password);
+      await loginWithEmailAndPassword(email, password);
       return props.history.push('/takePicture');
     } catch (error) {
       return null;
     }
   };
 
-  const handleGoogleSignUp = async (): Promise<void | null> => {
+  const handleGoogleSignIn = async (): Promise<void | null> => {
     try {
       await onGoogleSignIn();
       return props.history.push('/takePicture');
@@ -62,7 +66,7 @@ export default (props: any) => {
       <Container style={styles.container}>
         <Header>
           <Body>
-            <Title>Sign Up</Title>
+            <Title>Log In</Title>
           </Body>
         </Header>
         <Content contentContainerStyle={styles.container}>
@@ -91,15 +95,15 @@ export default (props: any) => {
                 onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => setPassword(e.nativeEvent.text)}
               />
             </Item>
-            <Text style={styles.linkText} onPress={() => props.history.push('/logIn')}>
-              Go to Log In
+            <Text style={styles.linkText} onPress={() => props.history.push('/')}>
+              Go to Sign Up
             </Text>
           </Form>
           <View style={styles.buttonContainer}>
-            <Button onPress={(): Promise<void | null> => handleSignUp()} style={styles.button}>
-              <Text>Sign Up</Text>
+            <Button onPress={(): Promise<void | null> => handleLogin()} style={styles.button}>
+              <Text>Log In</Text>
             </Button>
-            <GoogleSigninButton onPress={(): Promise<void | null> => handleGoogleSignUp()} style={[styles.googleButton, styles.button]} size={GoogleSigninButton.Size.Wide} />
+            <GoogleSigninButton onPress={(): Promise<void | null> => handleGoogleSignIn()} style={[styles.button, styles.googleButton]} size={GoogleSigninButton.Size.Wide} />
           </View>
         </Content>
       </Container>

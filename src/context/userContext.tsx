@@ -4,8 +4,10 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 
 interface UserContext {
   signUpError: string;
+  loginError: string;
   signUpWithEmailAndPassword: (email: string, password: string) => void;
   onGoogleSignIn: () => void;
+  loginWithEmailAndPassword: (email: string, password: string) => void;
 }
 
 type UserProvider = {
@@ -16,6 +18,8 @@ export const UserContext = createContext<UserContext>({
   signUpError: '',
   signUpWithEmailAndPassword: () => null,
   onGoogleSignIn: () => null,
+  loginWithEmailAndPassword: () => null,
+  loginError: '',
 });
 
 GoogleSignin.configure({
@@ -25,6 +29,7 @@ GoogleSignin.configure({
 
 const UserProvider = ({ children }: UserProvider) => {
   const [signUpError, setSignUpError] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>('');
   const signUpWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
     try {
       await auth().createUserWithEmailAndPassword(email, password);
@@ -40,7 +45,26 @@ const UserProvider = ({ children }: UserProvider) => {
     return auth().signInWithCredential(googleCredential);
   };
 
-  return <UserContext.Provider value={{ signUpError, signUpWithEmailAndPassword, onGoogleSignIn }}>{children}</UserContext.Provider>;
+  const loginWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      setLoginError(error.message);
+    }
+  };
+
+  return (
+    <UserContext.Provider
+      value={{
+        signUpError,
+        signUpWithEmailAndPassword,
+        onGoogleSignIn,
+        loginWithEmailAndPassword,
+        loginError,
+      }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserProvider;

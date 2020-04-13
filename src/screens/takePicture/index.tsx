@@ -50,7 +50,7 @@ type CameraType = {
   camera: RNCamera;
 };
 
-export default (props: TakePictureProps) => {
+export default (props: any) => {
   const { addPicture } = useContext(PictureContext);
   const takePicture = async (camera: RNCamera): Promise<void> => {
     const options = { quality: 0.5, base64: true };
