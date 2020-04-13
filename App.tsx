@@ -7,6 +7,7 @@ import TakePicture from './src/screens/takePicture';
 import AddNote from './src/screens/addNote';
 import ViewPicture from './src/screens/viewPicture';
 import SignUp from './src/screens/signUp';
+import LogIn from './src/screens/login';
 import PictureProvider from './src/context/pictureContext';
 import UserProvider from './src/context/userContext';
 import NotesProvider from './src/context/notesContext';
@@ -51,7 +52,6 @@ const App = () => {
 	}, []);
 
 	if (initializing) return <Text>this is working</Text>;
-
 	function PrivateRoute({ Component, ...rest }: any) {
 		return (
 			<Route
@@ -62,7 +62,7 @@ const App = () => {
 					) : (
 						<Redirect
 							to={{
-								pathname: '/signUp',
+								pathname: '/',
 								state: { from: props.location },
 							}}
 						/>
@@ -79,8 +79,13 @@ const App = () => {
 					<UserProvider>
 						<NativeRouter>
 							<View style={styles.container}>
-								<Route exact path='/signUp' component={SignUp} />
-								<PrivateRoute exact path='/' component={TakePicture} />
+								<Route exact path='/' component={SignUp} />
+								<Route exact path='/logIn' component={LogIn} />
+								<PrivateRoute
+									exact
+									path='/takePicture'
+									component={TakePicture}
+								/>
 								<PrivateRoute
 									exact
 									path='/viewPicture'
