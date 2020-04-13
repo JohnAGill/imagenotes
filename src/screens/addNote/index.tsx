@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Header, Body, Title, Textarea, Button, Text } from 'native-base';
+
 // @ts-ignore
 import DoneButton from 'react-native-keyboard-done-button';
+import _ from 'lodash';
 import { History } from 'history';
 import { NotesContext } from '../../context/notesContext';
 
 const styles = StyleSheet.create({
   input: {
-    flex: 1,
-    height: '100%',
+    height: '50%',
     padding: 10,
     width: '100%',
     marginTop: 50,
@@ -17,6 +19,9 @@ const styles = StyleSheet.create({
   doneButton: {
     backgroundColor: 'darkgrey',
     marginTop: 49,
+  },
+  addNotebutton: {
+    alignSelf: 'center',
   },
 });
 
@@ -28,6 +33,10 @@ export default (props: AddNoteProps) => {
   const { note, updateNote, addNewNote } = useContext(NotesContext);
 
   const handleAddNote = (newNote: string): void => {
+    if (_.isEmpty(newNote)) {
+      props.history.goBack();
+      return undefined;
+    }
     addNewNote(newNote);
     updateNote('');
     props.history.goBack();
@@ -35,8 +44,18 @@ export default (props: AddNoteProps) => {
 
   return (
     <>
-      <TextInput style={styles.input} multiline numberOfLines={2} onChangeText={(text: string): void => updateNote(text)} value={note} />
-      <DoneButton onPress={(): void => handleAddNote(note)} style={styles.doneButton} />
+      <Header>
+        <Body>
+          <Title>Add Note</Title>
+        </Body>
+      </Header>
+      <View style={{ flex: 1, margin: 10, height: '50%' }}>
+        <Textarea rowSpan={5} bordered underline style={styles.input} numberOfLines={2} onChangeText={(text: string): void => updateNote(text)} value={note} />
+      </View>
+      <DoneButton onPress={(): void => undefined} style={styles.doneButton} />
+      <Button style={styles.addNotebutton} onPress={(): void => handleAddNote(note)}>
+        <Text>Add Note</Text>
+      </Button>
     </>
   );
 };

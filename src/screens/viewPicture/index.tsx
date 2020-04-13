@@ -53,7 +53,7 @@ export default (props: ViewPictureProps) => {
       if (i === index) {
         return {
           ...note,
-          text: !note.display,
+          display: !note.display,
         };
       }
       return note;

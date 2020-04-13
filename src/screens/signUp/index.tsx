@@ -32,7 +32,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props: any) => {
+interface SignUpProps {
+  history: History;
+}
+
+export default (props: SignUpProps) => {
   const { signUpWithEmailAndPassword, onGoogleSignIn } = useContext(UserContext);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
