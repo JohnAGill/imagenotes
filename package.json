@@ -49,6 +49,7 @@
 		"react": "16.11.0",
 		"react-native": "0.62.2",
 		"react-native-camera": "^3.22.1",
+		"react-native-image-picker": "^2.3.1",
 		"react-native-keyboard-done-button": "https://github.com/JohnAGill/react-native-keyboard-done-button",
 		"react-router-native": "^5.1.2"
 	},

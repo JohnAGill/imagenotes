@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
+import {
+	NativeRouter,
+	Route,
+	Link,
+	Redirect,
+	useHistory,
+} from 'react-router-native';
 import { Icon } from 'native-base';
 
 import TakePicture from './src/screens/takePicture';
@@ -8,10 +14,13 @@ import AddNote from './src/screens/addNote';
 import ViewPicture from './src/screens/viewPicture';
 import SignUp from './src/screens/signUp';
 import LogIn from './src/screens/login';
+import Home from './src/screens/home';
+import UploadPicture from './src/screens/uploadPicture';
 import PictureProvider from './src/context/pictureContext';
 import UserProvider from './src/context/userContext';
 import NotesProvider from './src/context/notesContext';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import takePicture from './src/screens/takePicture';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,6 +32,7 @@ const styles = StyleSheet.create({
 	nav: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
+		marginBottom: 10,
 	},
 	navItem: {
 		flex: 1,
@@ -36,38 +46,37 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 15,
 	},
+	active: {
+		borderTopColor: 'green',
+		borderTopWidth: 1,
+		borderStyle: 'solid',
+	},
 });
 
-const App = () => {
+const App = (props: any) => {
 	const [initializing, setInitializing] = useState<boolean>(true);
+	const [activeTab, setActiveTab] = useState<string>('home');
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 	function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
 		setUser(user);
 		if (initializing) setInitializing(false);
 	}
-
 	useEffect(() => {
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 		return subscriber;
 	}, []);
 
 	if (initializing) return <Text>this is working</Text>;
-	function PrivateRoute({ Component, ...rest }: any) {
+
+	function PrivateRoute({ component: Component, ...rest }: any) {
+		if (user) {
+			return <Route {...rest} render={(props) => <Component {...props} />} />;
+		}
 		return (
-			<Route
-				{...rest}
-				render={(props: any) =>
-					user ? (
-						<Component {...props} />
-					) : (
-						<Redirect
-							to={{
-								pathname: '/',
-								state: { from: props.location },
-							}}
-						/>
-					)
-				}
+			<Redirect
+				to={{
+					pathname: '/signUp',
+				}}
 			/>
 		);
 	}
@@ -79,12 +88,18 @@ const App = () => {
 					<UserProvider>
 						<NativeRouter>
 							<View style={styles.container}>
-								<Route exact path='/' component={SignUp} />
+								<Route exact path='/signUp' component={SignUp} />
 								<Route exact path='/logIn' component={LogIn} />
+								<PrivateRoute exact path='/' component={Home} />
 								<PrivateRoute
 									exact
 									path='/takePicture'
 									component={TakePicture}
+								/>
+								<PrivateRoute
+									exact
+									path='/uploadPicture'
+									component={UploadPicture}
 								/>
 								<PrivateRoute
 									exact
@@ -93,8 +108,38 @@ const App = () => {
 								/>
 								<PrivateRoute exact path='/addNote' component={AddNote} />
 								<View style={styles.nav}>
-									<Link to='/' underlayColor='#f0f4f7' style={styles.navItem}>
+									<Link
+										onPress={() => setActiveTab('home')}
+										to='/'
+										underlayColor='#f0f4f7'
+										style={[
+											styles.navItem,
+											activeTab === 'home' && styles.active,
+										]}
+									>
+										<Icon name='home' />
+									</Link>
+									<Link
+										onPress={() => setActiveTab('takePicture')}
+										to='/takePicture'
+										underlayColor='#f0f4f7'
+										style={[
+											styles.navItem,
+											activeTab === 'takePicture' && styles.active,
+										]}
+									>
 										<Icon name='camera' />
+									</Link>
+									<Link
+										onPress={() => setActiveTab('uploadPicture')}
+										to='/uploadPicture'
+										underlayColor='#f0f4f7'
+										style={[
+											styles.navItem,
+											activeTab === 'uploadPicture' && styles.active,
+										]}
+									>
+										<Icon name='photos' />
 									</Link>
 								</View>
 							</View>
