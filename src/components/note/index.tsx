@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
   noteContainerIndex: {
     width: 30,
     height: 30,
+    paddingTop: 0,
+    paddingLeft: 0,
   },
 });
 
@@ -44,6 +46,7 @@ export default ({ note, index, onPress }: NoteProps) => {
     <TouchableOpacity
       style={[
         styles.noteContainer,
+        !note.display && styles.noteContainerIndex,
         {
           top: note.location.y,
           left: spacingNeeded,
@@ -51,7 +54,14 @@ export default ({ note, index, onPress }: NoteProps) => {
       ]}
       onPress={(): void => onPress(index)}
       onLayout={(e) => (note.display ? calculateDisplaySpacing(note.location.x, e.nativeEvent.layout.width) : setSpacingNeeded(note.location.x))}>
-      <Text style={{ color: 'white', flex: 1, flexWrap: 'wrap' }}>{!note.display ? index + 1 : note.value}</Text>
+      <Text
+        style={{
+          textAlign: 'center',
+          marginTop: 3,
+          color: 'white',
+        }}>
+        {!note.display ? index + 1 : note.value}
+      </Text>
     </TouchableOpacity>
   );
 };
