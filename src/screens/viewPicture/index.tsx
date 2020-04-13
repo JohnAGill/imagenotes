@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'black',
+    flexGrow: 1,
     zIndex: 1,
   },
   button: {
