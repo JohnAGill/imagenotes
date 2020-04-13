@@ -46,7 +46,7 @@ export default (props: LoginProps) => {
   const handleLogin = async (): Promise<void | null> => {
     try {
       await loginWithEmailAndPassword(email, password);
-      return props.history.push('/takePicture');
+      return props.history.push('/');
     } catch (error) {
       return null;
     }
@@ -55,7 +55,7 @@ export default (props: LoginProps) => {
   const handleGoogleSignIn = async (): Promise<void | null> => {
     try {
       await onGoogleSignIn();
-      return props.history.push('/takePicture');
+      return props.history.push('/');
     } catch (error) {
       return null;
     }
