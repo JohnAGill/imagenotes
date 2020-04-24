@@ -52,19 +52,14 @@ export default ({ note }: DisplayNoteProps) => {
   const [componentNote, setComponentNote] = useState<any>(note.notes);
 
   const handleShowNote = (index: number) => {
-    console.log('here');
-    const updatedNotes: any = _.map(componentNote, (note: NoteType, i: number) => {
-      console.log('here2');
-      console.log(i);
-      console.log(index);
+    const updatedNotes: any = _.map(componentNote, (noteObject: NoteType, i: number) => {
       if (i === index) {
-        console.log('yup');
         return {
-          ...note,
-          display: !note.display,
+          ...noteObject,
+          display: !noteObject.display,
         };
       }
-      return note;
+      return noteObject;
     });
     setComponentNote(updatedNotes);
   };
@@ -89,7 +84,8 @@ export default ({ note }: DisplayNoteProps) => {
             style={{
               flex: 0,
               justifyContent: 'center',
-            }}></View>
+            }}
+          />
         </ImageBackground>
       </View>
     </>

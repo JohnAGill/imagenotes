@@ -8,6 +8,7 @@ import { graphql } from 'react-relay/hooks';
 import { History } from 'history';
 import environment from '../../RelayEnvironment';
 import DisplayNote from '../../components/displayNote';
+
 const diemnsions = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +34,7 @@ interface ViewNotesProps {
   history: History;
 }
 
-const ViewNotes = (props: any) => {
+const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
   const query = graphql`
     query viewNotesQuery($userId: String) {
       getNotes(userId: $userId) {

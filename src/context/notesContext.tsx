@@ -65,29 +65,29 @@ const NotesProviderText = ({ children }: NotesProvider) => {
     setNotes([...notes, newNote]);
   };
 
-  const saveNote = async (note: any) => {
+  const saveNote = async (noteToSave: any) => {
     try {
       const image = await superagent
         .post('https://api.cloudinary.com/v1_1/dukb3cxun/upload')
         .field('upload_preset', 'imagenotes')
         .field('file', {
-          uri: note.picture,
+          uri: noteToSave.picture,
           type: 'image/png',
           name: 'upload.png',
         })
         .end(async (error: any, response: any) => {
-          const url = response.body.url;
+          const { url } = response.body;
           const noteToSend = {
             picture: url,
             uid: 'something09',
             user_id: 'test22',
-            notes: _.map(notes, (note) => ({
-              value: note.value,
-              x: note.location.x,
-              y: note.location.y,
-              order: note.index,
+            notes: _.map(notes, (noteObject) => ({
+              value: noteObject.value,
+              x: noteObject.location.x,
+              y: noteObject.location.y,
+              order: noteObject.index,
               note_uid: 'something09',
-              uid: `${note.index}`,
+              uid: `${noteObject.index}`,
             })),
           };
           try {
