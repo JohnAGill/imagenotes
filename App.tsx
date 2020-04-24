@@ -8,6 +8,11 @@ import {
 	useHistory,
 } from 'react-router-native';
 import { Icon } from 'native-base';
+import Relay from 'react-relay';
+// @ts-ignore
+import useRelay from 'react-router-relay';
+// @ts-ignore
+import RelayLocalSchema from 'relay-local-schema';
 
 import TakePicture from './src/screens/takePicture';
 import AddNote from './src/screens/addNote';
@@ -15,12 +20,14 @@ import ViewPicture from './src/screens/viewPicture';
 import SignUp from './src/screens/signUp';
 import LogIn from './src/screens/login';
 import Home from './src/screens/home';
+import ViewNotes from './src/screens/viewNotes';
 import UploadPicture from './src/screens/uploadPicture';
 import PictureProvider from './src/context/pictureContext';
 import UserProvider from './src/context/userContext';
 import NotesProvider from './src/context/notesContext';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import takePicture from './src/screens/takePicture';
+import { RelayEnvironmentProvider } from 'react-relay/hooks';
+import RelayEnvironment from './src/RelayEnvironment';
 
 const styles = StyleSheet.create({
 	container: {
@@ -83,70 +90,72 @@ const App = (props: any) => {
 
 	return (
 		<>
-			<PictureProvider>
-				<NotesProvider>
-					<UserProvider>
-						<NativeRouter>
-							<View style={styles.container}>
-								<Route exact path='/signUp' component={SignUp} />
-								<Route exact path='/logIn' component={LogIn} />
-								<PrivateRoute exact path='/' component={Home} />
-								<PrivateRoute
-									exact
-									path='/takePicture'
-									component={TakePicture}
-								/>
-								<PrivateRoute
-									exact
-									path='/uploadPicture'
-									component={UploadPicture}
-								/>
-								<PrivateRoute
-									exact
-									path='/viewPicture'
-									component={ViewPicture}
-								/>
-								<PrivateRoute exact path='/addNote' component={AddNote} />
-								<View style={styles.nav}>
-									<Link
-										onPress={() => setActiveTab('home')}
-										to='/'
-										underlayColor='#f0f4f7'
-										style={[
-											styles.navItem,
-											activeTab === 'home' && styles.active,
-										]}
-									>
-										<Icon name='home' />
-									</Link>
-									<Link
-										onPress={() => setActiveTab('takePicture')}
-										to='/takePicture'
-										underlayColor='#f0f4f7'
-										style={[
-											styles.navItem,
-											activeTab === 'takePicture' && styles.active,
-										]}
-									>
-										<Icon name='camera' />
-									</Link>
-									<Link
-										onPress={() => setActiveTab('uploadPicture')}
-										to='/uploadPicture'
-										underlayColor='#f0f4f7'
-										style={[
-											styles.navItem,
-											activeTab === 'uploadPicture' && styles.active,
-										]}
-									>
-										<Icon name='photos' />
-									</Link>
+			<RelayEnvironmentProvider environment={RelayEnvironment}>
+				<PictureProvider>
+					<NotesProvider>
+						<UserProvider>
+							<NativeRouter>
+								<View style={styles.container}>
+									<Route exact path='/signUp' component={SignUp} />
+									<Route exact path='/logIn' component={LogIn} />
+									<PrivateRoute exact path='/' component={ViewNotes} />
+									<PrivateRoute
+										exact
+										path='/takePicture'
+										component={TakePicture}
+									/>
+									<PrivateRoute
+										exact
+										path='/uploadPicture'
+										component={UploadPicture}
+									/>
+									<PrivateRoute
+										exact
+										path='/viewPicture'
+										component={ViewPicture}
+									/>
+									<PrivateRoute exact path='/addNote' component={AddNote} />
+									<View style={styles.nav}>
+										<Link
+											onPress={() => setActiveTab('home')}
+											to='/'
+											underlayColor='#f0f4f7'
+											style={[
+												styles.navItem,
+												activeTab === 'home' && styles.active,
+											]}
+										>
+											<Icon name='home' />
+										</Link>
+										<Link
+											onPress={() => setActiveTab('takePicture')}
+											to='/takePicture'
+											underlayColor='#f0f4f7'
+											style={[
+												styles.navItem,
+												activeTab === 'takePicture' && styles.active,
+											]}
+										>
+											<Icon name='camera' />
+										</Link>
+										<Link
+											onPress={() => setActiveTab('uploadPicture')}
+											to='/uploadPicture'
+											underlayColor='#f0f4f7'
+											style={[
+												styles.navItem,
+												activeTab === 'uploadPicture' && styles.active,
+											]}
+										>
+											<Icon name='photos' />
+										</Link>
+									</View>
 								</View>
-							</View>
-						</NativeRouter>
-					</UserProvider>
-				</NotesProvider>
-			</PictureProvider>
+							</NativeRouter>
+						</UserProvider>
+					</NotesProvider>
+				</PictureProvider>
+			</RelayEnvironmentProvider>
 		</>
 	);
 };

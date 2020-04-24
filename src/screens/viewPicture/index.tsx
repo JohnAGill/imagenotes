@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'black',
-    flexGrow: 1,
     zIndex: 1,
   },
   button: {
@@ -43,7 +42,7 @@ interface ViewPictureProps {
 
 export default (props: ViewPictureProps) => {
   const { picture } = useContext(PictureContext);
-  const { notes, updateNotes, updateLocation } = useContext(NotesContext);
+  const { notes, updateNotes, updateLocation, saveNote } = useContext(NotesContext);
   const handleImagePressed = (e: NativeSyntheticEvent<NativeTouchEvent>): void => {
     updateLocation({ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY });
     return props.history.push('/addNote', [{ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY }]);
@@ -54,7 +53,7 @@ export default (props: ViewPictureProps) => {
       if (i === index) {
         return {
           ...note,
-          display: !note.display,
+          text: !note.display,
         };
       }
       return note;
@@ -83,6 +82,16 @@ export default (props: ViewPictureProps) => {
                   return props.history.goBack();
                 }}>
                 <Text>Go Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.capture}
+                onPress={(): void => {
+                  saveNote({
+                    picture: picture,
+                    notes: notes,
+                  });
+                }}>
+                <Text>Save</Text>
               </TouchableOpacity>
             </View>
           </ImageBackground>
