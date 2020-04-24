@@ -1,0 +1,50 @@
+input NoteInput {
+	value: String
+	note_uid: String
+	x: Int
+	y: Int
+	order: Int
+	uid: String
+}
+
+input CreateNoteInput {
+	picture: String
+	uid: String
+	notes: [NoteInput]
+	user_id: String
+}
+
+input UpdateNoteInput {
+	uid: String
+	text: String
+}
+
+type Notes {
+	picture: String
+	user_id: String
+	uid: String
+	notes: [Note]
+}
+
+type Note {
+	value: String
+	note_uid: String
+	x: Int
+	y: Int
+	order: Int
+	uid: String
+}
+
+type User {
+	userName: String
+	email: String
+	uid: String
+}
+
+type Query {
+	createUser(email: String, userName: String, uid: String): Boolean
+	getUser(id: String): User
+	createNote(note: CreateNoteInput): Boolean
+	getNotes(userId: String): [Notes]
+	updateNote(uid: String, text: String): Boolean
+}

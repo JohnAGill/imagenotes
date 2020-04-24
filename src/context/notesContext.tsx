@@ -1,4 +1,8 @@
 import React, { createContext, useState, ReactNode } from 'react';
+import superagent from 'superagent';
+import _ from 'lodash';
+import { graphql } from 'react-relay';
+import fetchGraphQL from '../fetchGraphQL';
 
 type Location = {
   x: number;
@@ -12,7 +16,7 @@ export type NoteType = {
   display: boolean;
 };
 
-interface NotesContext {
+interface NotesContextType {
   note: string;
   notes: NoteType[];
   updateNote: (value: string) => void;
@@ -20,13 +24,14 @@ interface NotesContext {
   updateLocation: (value: Location) => void;
   addNewNote: (value: string) => void;
   updateNotes: (value: NoteType[]) => void;
+  saveNote: (value: any) => void;
 }
 
 type NotesProvider = {
   children: ReactNode;
 };
 
-export const NotesContext = createContext<NotesContext>({
+export const NotesContext = createContext<NotesContextType>({
   note: '',
   notes: [],
   updateNote: (value: string) => value,
@@ -37,11 +42,12 @@ export const NotesContext = createContext<NotesContext>({
   updateLocation: (value: Location) => value,
   addNewNote: (value: string) => value,
   updateNotes: (value: NoteType[]) => value,
+  saveNote: (value: any) => value,
 });
 
-const NotesProvider = ({ children }: NotesProvider) => {
+const NotesProviderText = ({ children }: NotesProvider) => {
   const [note, setNote] = useState<string>('');
-  const [notes, setNotes] = useState<NoteType[]>([]);
+  const [notes, setNotes] = useState<Array<NoteType>>([]);
   const [location, setLocation] = useState<Location>({ x: 0, y: 0 });
   const updateNote = (value: string) => {
     setNote(value);
@@ -59,6 +65,49 @@ const NotesProvider = ({ children }: NotesProvider) => {
     setNotes([...notes, newNote]);
   };
 
+  const saveNote = async (note: any) => {
+    try {
+      const image = await superagent
+        .post('https://api.cloudinary.com/v1_1/dukb3cxun/upload')
+        .field('upload_preset', 'imagenotes')
+        .field('file', {
+          uri: note.picture,
+          type: 'image/png',
+          name: 'upload.png',
+        })
+        .end(async (error: any, response: any) => {
+          const url = response.body.url;
+          const noteToSend = {
+            picture: url,
+            uid: 'something09',
+            user_id: 'test22',
+            notes: _.map(notes, (note) => ({
+              value: note.value,
+              x: note.location.x,
+              y: note.location.y,
+              order: note.index,
+              note_uid: 'something09',
+              uid: `${note.index}`,
+            })),
+          };
+          try {
+            const query = graphql`
+              query notesContextQuery($note: CreateNoteInput) {
+                createNote(note: $note)
+              }
+            `;
+            const data = await fetchGraphQL(query, {
+              note: noteToSend,
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateNotes = (newNotes: NoteType[]) => {
     setNotes(newNotes);
   };
@@ -72,10 +121,11 @@ const NotesProvider = ({ children }: NotesProvider) => {
         notes,
         addNewNote,
         updateNotes,
+        saveNote,
       }}>
       {children}
     </NotesContext.Provider>
   );
 };
 
-export default NotesProvider;
+export default NotesProviderText;
