@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, Dimensions } from 'react-native';
 import { View } from 'native-base';
+import auth from '@react-native-firebase/auth';
+
 import _ from 'lodash';
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import { QueryRenderer, createFragmentContainer } from 'react-relay';
@@ -8,6 +10,7 @@ import { graphql } from 'react-relay/hooks';
 import { History } from 'history';
 import environment from '../../RelayEnvironment';
 import DisplayNote from '../../components/displayNote';
+import { UserContext } from '../../context/userContext';
 
 const diemnsions = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -35,6 +38,20 @@ interface ViewNotesProps {
 }
 
 const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
+  const { setUserId, user } = useContext(UserContext);
+  const [callCount, setCallCount] = useState<number>(0);
+  const checkForUser = () => {
+    const currentUser = auth().currentUser;
+    setUserId(currentUser?.uid);
+  };
+  if (_.isEmpty(user?.uid) && callCount < 10) {
+    checkForUser();
+    setCallCount(callCount + 1);
+    return <Text>loading</Text>;
+  } else if (callCount > 10 && _.isEmpty(user?.uid)) {
+    ViewNotesProps.history.push('/');
+    return <Text>loading</Text>;
+  }
   const query = graphql`
     query viewNotesQuery($userId: String) {
       getNotes(userId: $userId) {
@@ -45,6 +62,7 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
           y
           order
           uid
+          note_uid
         }
       }
     }
@@ -54,15 +72,13 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
     <QueryRenderer
       environment={environment}
       query={query}
-      variables={{ userId: 'test22' }}
+      variables={{ userId: user?.uid }}
       render={({ error, props }: any) => {
-        console.log(props);
         const cards = _.map(props?.getNotes, (note) => (
           <Card style={styles.card}>
-            <DisplayNote note={note} />
+            <DisplayNote history={ViewNotesProps.history} note={note} />
           </Card>
         ));
-        console.log(cards);
         if (error) {
           return <Text>Error!</Text>;
         }
@@ -91,6 +107,7 @@ export default createFragmentContainer(ViewNotes, {
         y
         order
         uid
+        note_uid
       }
     }
   `,

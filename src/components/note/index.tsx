@@ -9,6 +9,7 @@ interface NoteProps {
   note: NoteType;
   index: number;
   onPress: (index: number) => void;
+  onLongPress: (index: number) => void;
 }
 
 const styles = StyleSheet.create({
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ note, index, onPress }: NoteProps) => {
+export default ({ note, index, onPress, onLongPress }: NoteProps) => {
   const [spacingNeeded, setSpacingNeeded] = useState<number>(note.location.x);
   const windowWidth = useWindowDimensions().width;
 
@@ -52,6 +53,7 @@ export default ({ note, index, onPress }: NoteProps) => {
           left: spacingNeeded,
         },
       ]}
+      onLongPress={onLongPress ? () => onLongPress(index) : () => null}
       onPress={(): void => onPress(index)}
       onLayout={(e) => (note.display ? calculateDisplaySpacing(note.location.x, e.nativeEvent.layout.width) : setSpacingNeeded(note.location.x))}>
       <Text

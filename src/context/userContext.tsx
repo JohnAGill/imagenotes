@@ -1,6 +1,10 @@
 import React, { createContext, useState, ReactNode } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
+
+interface User {
+  uid?: string;
+}
 
 interface UserContext {
   signUpError: string;
@@ -8,6 +12,8 @@ interface UserContext {
   signUpWithEmailAndPassword: (email: string, password: string) => void;
   onGoogleSignIn: () => void;
   loginWithEmailAndPassword: (email: string, password: string) => void;
+  user?: User;
+  setUserId: (uid: string | undefined) => void;
 }
 
 type UserProvider = {
@@ -20,6 +26,10 @@ export const UserContext = createContext<UserContext>({
   onGoogleSignIn: () => null,
   loginWithEmailAndPassword: () => null,
   loginError: '',
+  user: {
+    uid: '',
+  },
+  setUserId: () => null,
 });
 
 GoogleSignin.configure({
@@ -30,32 +40,52 @@ GoogleSignin.configure({
 const UserProvider = ({ children }: UserProvider) => {
   const [signUpError, setSignUpError] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
+  const [user, setUser] = useState<User>({ uid: '' });
   const signUpWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      console.log('sign up success');
+      const user = auth().currentUser;
+      setUser({
+        uid: user?.uid,
+      });
     } catch (error) {
       setSignUpError(error.message);
     }
   };
 
-  const onGoogleSignIn = async (): Promise<FirebaseAuthTypes.UserCredential> => {
+  const onGoogleSignIn = async (): Promise<void> => {
     const { idToken } = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return auth().signInWithCredential(googleCredential);
+    await auth().signInWithCredential(googleCredential);
+    const user = auth().currentUser;
+    setUser({
+      uid: user?.uid,
+    });
   };
 
   const loginWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
     try {
       await auth().signInWithEmailAndPassword(email, password);
+      const user = auth().currentUser;
+      setUser({
+        uid: user?.uid,
+      });
     } catch (error) {
       setLoginError(error.message);
     }
   };
 
+  const setUserId = (uid: string | undefined) => {
+    setUser({
+      uid: uid,
+    });
+  };
+
   return (
     <UserContext.Provider
       value={{
+        user,
+        setUserId,
         signUpError,
         signUpWithEmailAndPassword,
         onGoogleSignIn,

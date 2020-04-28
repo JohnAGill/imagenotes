@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import _ from 'lodash';
 import { History } from 'history';
 import { PictureContext } from '../../context/pictureContext';
 import { NotesContext, NoteType } from '../../context/notesContext';
 import Note from '../../components/note';
+import { UserContext } from '../../context/userContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,15 +38,25 @@ const styles = StyleSheet.create({
 });
 
 interface ViewPictureProps {
-  history: History;
+  history: {
+    location: {
+      state: {
+        isEdit: boolean;
+      };
+    };
+    push: (value: string) => void;
+    goBack: () => void;
+  };
 }
 
 export default (props: ViewPictureProps) => {
   const { picture } = useContext(PictureContext);
-  const { notes, updateNotes, updateLocation, saveNote } = useContext(NotesContext);
+  const { notes, updateNotes, updateLocation, saveNote, setNoteToEdit, updateNoteSave } = useContext(NotesContext);
+  const { user } = useContext(UserContext);
+  const [isEdit, setIsEdit] = useState<boolean>(props.history.location.state?.isEdit);
   const handleImagePressed = (e: NativeSyntheticEvent<NativeTouchEvent>): void => {
     updateLocation({ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY });
-    return props.history.push('/addNote', [{ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY }]);
+    return props.history.push('/addNote');
   };
 
   const handleShowNote = (index: number) => {
@@ -53,12 +64,30 @@ export default (props: ViewPictureProps) => {
       if (i === index) {
         return {
           ...note,
-          text: !note.display,
+          display: !note.display,
         };
       }
       return note;
     });
     updateNotes(updatedNotes);
+  };
+
+  const handleNoteEdit = (index: number) => {
+    const noteToUpdate = notes[index];
+    setNoteToEdit(noteToUpdate);
+    return props.history.push('/editNote');
+  };
+
+  const handleSaveNote = () => {
+    saveNote(
+      {
+        picture: picture,
+      },
+      user?.uid,
+    );
+  };
+  const handleUpdateNote = () => {
+    updateNoteSave();
   };
 
   return (
@@ -67,7 +96,7 @@ export default (props: ViewPictureProps) => {
         <TouchableOpacity style={styles.container} onPress={(e: NativeSyntheticEvent<NativeTouchEvent>) => handleImagePressed(e)}>
           <ImageBackground style={styles.preview} source={{ uri: picture }}>
             {_.map(notes, (note: NoteType, index: number): any => (
-              <Note note={note} index={index} onPress={handleShowNote} />
+              <Note onLongPress={handleNoteEdit} note={note} index={index} onPress={handleShowNote} />
             ))}
             <View
               style={{
@@ -83,14 +112,7 @@ export default (props: ViewPictureProps) => {
                 }}>
                 <Text>Go Back</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.capture}
-                onPress={(): void => {
-                  saveNote({
-                    picture: picture,
-                    notes: notes,
-                  });
-                }}>
+              <TouchableOpacity style={styles.capture} onPress={isEdit ? () => handleUpdateNote() : () => handleSaveNote()}>
                 <Text>Save</Text>
               </TouchableOpacity>
             </View>

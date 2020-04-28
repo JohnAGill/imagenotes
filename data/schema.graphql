@@ -1,8 +1,8 @@
 input NoteInput {
 	value: String
 	note_uid: String
-	x: Int
-	y: Int
+	x: Float
+	y: Float
 	order: Int
 	uid: String
 }
@@ -15,8 +15,7 @@ input CreateNoteInput {
 }
 
 input UpdateNoteInput {
-	uid: String
-	text: String
+	notes: [NoteInput]
 }
 
 type Notes {
@@ -29,8 +28,8 @@ type Notes {
 type Note {
 	value: String
 	note_uid: String
-	x: Int
-	y: Int
+	x: Float
+	y: Float
 	order: Int
 	uid: String
 }
@@ -46,5 +45,5 @@ type Query {
 	getUser(id: String): User
 	createNote(note: CreateNoteInput): Boolean
 	getNotes(userId: String): [Notes]
-	updateNote(uid: String, text: String): Boolean
+	updateNote(notes: [NoteInput]): Boolean
 }

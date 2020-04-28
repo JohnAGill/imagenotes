@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { RNCamera, Constants } from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 import { History } from 'history';
 import { PictureContext } from '../../context/pictureContext';
 
@@ -52,6 +52,7 @@ type CameraType = {
 
 export default (props: TakePictureProps) => {
   const { addPicture } = useContext(PictureContext);
+
   const takePicture = async (camera: RNCamera): Promise<void> => {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
