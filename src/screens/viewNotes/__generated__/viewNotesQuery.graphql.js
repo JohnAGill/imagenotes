@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 63e8d31718ca17da7f8abc11f72bc82e
+ * @relayHash df12bdc12f53f7ee2a87611d9670d5da
  */
 
 /* eslint-disable */
@@ -21,6 +21,7 @@ export type viewNotesQueryResponse = {|
       +y: ?number,
       +order: ?number,
       +uid: ?string,
+      +note_uid: ?string,
     |}>,
   |}>
 |};
@@ -42,6 +43,7 @@ query viewNotesQuery(
       y
       order
       uid
+      note_uid
     }
   }
 }
@@ -123,6 +125,13 @@ const node /*: ConcreteRequest*/ = (function () {
                 args: null,
                 storageKey: null,
               },
+              {
+                kind: 'ScalarField',
+                alias: null,
+                name: 'note_uid',
+                args: null,
+                storageKey: null,
+              },
             ],
           },
         ],
@@ -149,12 +158,12 @@ const node /*: ConcreteRequest*/ = (function () {
       name: 'viewNotesQuery',
       id: null,
       text:
-        'query viewNotesQuery(\n  $userId: String\n) {\n  getNotes(userId: $userId) {\n    picture\n    notes {\n      value\n      x\n      y\n      order\n      uid\n    }\n  }\n}\n',
+        'query viewNotesQuery(\n  $userId: String\n) {\n  getNotes(userId: $userId) {\n    picture\n    notes {\n      value\n      x\n      y\n      order\n      uid\n      note_uid\n    }\n  }\n}\n',
       metadata: {},
     },
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cf412b36f17363400b32695c0d596f8e';
+(node/*: any*/).hash = 'c38059fba0099803a5929d7d5fbb0d2a';
 
 module.exports = node;

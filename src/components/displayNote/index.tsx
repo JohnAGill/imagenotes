@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import Modal from 'react-native-modal';
 
 import _ from 'lodash';
-import { NotesContext, NoteType } from '../../context/notesContext';
+import { Button, Text, Card } from 'native-base';
+import { NoteType, NotesContext } from '../../context/notesContext';
 import Note from '../note';
+import { PictureContext } from '../../context/pictureContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,11 +49,24 @@ interface DisplayNoteProps {
       uid: number;
     };
   };
+  history: any;
 }
 
-export default ({ note }: DisplayNoteProps) => {
+export default ({ note, history }: DisplayNoteProps) => {
   const [componentNote, setComponentNote] = useState<any>(note.notes);
-
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const { addPicture } = useContext(PictureContext);
+  const { updateNotes } = useContext(NotesContext);
+  const noteForEdit = {
+    ...note,
+    notes: _.map(componentNote, (test: any) => ({
+      ...test,
+      location: {
+        x: test.x,
+        y: test.y,
+      },
+    })),
+  };
   const handleShowNote = (index: number) => {
     const updatedNotes: any = _.map(componentNote, (noteObject: NoteType, i: number) => {
       if (i === index) {
@@ -63,30 +79,58 @@ export default ({ note }: DisplayNoteProps) => {
     });
     setComponentNote(updatedNotes);
   };
-
-  console.log(componentNote);
-
   return (
     <>
       <View style={styles.container}>
-        <ImageBackground style={styles.preview} source={{ uri: note.picture }}>
-          {_.map(componentNote, (noteToShow: any, index: number): any => {
-            const newNote = {
-              ...noteToShow,
-              location: {
-                x: noteToShow.x,
-                y: noteToShow.y,
-              },
-            };
-            return <Note note={newNote} index={index} onPress={() => handleShowNote(index)} />;
-          })}
-          <View
-            style={{
-              flex: 0,
-              justifyContent: 'center',
-            }}
-          />
-        </ImageBackground>
+        <TouchableWithoutFeedback onPress={() => null} onLongPress={() => setShowModal(true)}>
+          <ImageBackground style={styles.preview} source={{ uri: note.picture }}>
+            {_.map(componentNote, (noteToShow: any, index: number): any => {
+              const newNote = {
+                ...noteToShow,
+                location: {
+                  x: noteToShow.x,
+                  y: noteToShow.y,
+                },
+              };
+              return <Note onLongPress={() => null} note={newNote} index={index} onPress={() => handleShowNote(index)} />;
+            })}
+            <View
+              style={{
+                flex: 0,
+                justifyContent: 'center',
+              }}
+            />
+          </ImageBackground>
+        </TouchableWithoutFeedback>
+
+        <Modal onBackdropPress={() => setShowModal(false)} isVisible={showModal}>
+          <Card style={{ alignItems: 'center', padding: 40, borderRadius: 4 }}>
+            <Button
+              style={{
+                display: 'flex',
+                width: 250,
+                justifyContent: 'center',
+                marginBottom: 10,
+              }}
+              onPress={() => {
+                addPicture(noteForEdit.picture);
+                updateNotes(noteForEdit.notes);
+                setShowModal(false);
+                history.push('/viewPicture', { isEdit: true });
+              }}>
+              <Text>Edit</Text>
+            </Button>
+            <Button
+              style={{
+                display: 'flex',
+                width: 250,
+                justifyContent: 'center',
+              }}
+              onPress={() => setShowModal(false)}>
+              <Text>Close</Text>
+            </Button>
+          </Card>
+        </Modal>
       </View>
     </>
   );

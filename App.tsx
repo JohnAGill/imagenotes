@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import {
-	NativeRouter,
-	Route,
-	Link,
-	Redirect,
-	useHistory,
-} from 'react-router-native';
+import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 import { Icon } from 'native-base';
-import Relay from 'react-relay';
-// @ts-ignore
-import useRelay from 'react-router-relay';
-// @ts-ignore
-import RelayLocalSchema from 'relay-local-schema';
 
 import TakePicture from './src/screens/takePicture';
 import AddNote from './src/screens/addNote';
+import EditNote from './src/screens/editNote';
 import ViewPicture from './src/screens/viewPicture';
 import SignUp from './src/screens/signUp';
 import LogIn from './src/screens/login';
-import Home from './src/screens/home';
 import ViewNotes from './src/screens/viewNotes';
 import UploadPicture from './src/screens/uploadPicture';
 import PictureProvider from './src/context/pictureContext';
@@ -64,6 +53,7 @@ const App = (props: any) => {
 	const [initializing, setInitializing] = useState<boolean>(true);
 	const [activeTab, setActiveTab] = useState<string>('home');
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+
 	function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
 		setUser(user);
 		if (initializing) setInitializing(false);
@@ -87,7 +77,7 @@ const App = (props: any) => {
 			/>
 		);
 	}
-
+	//auth().signOut();
 	return (
 		<>
 			<RelayEnvironmentProvider environment={RelayEnvironment}>
@@ -115,6 +105,7 @@ const App = (props: any) => {
 										component={ViewPicture}
 									/>
 									<PrivateRoute exact path='/addNote' component={AddNote} />
+									<PrivateRoute exact path='/editNote' component={EditNote} />
 									<View style={styles.nav}>
 										<Link
 											onPress={() => setActiveTab('home')}

@@ -1,36 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet } from 'react-native';
 import { Header, Body, Title, Button, Text } from 'native-base';
 import { History } from 'history';
 import ImagePicker from 'react-native-image-picker';
 import { PictureContext } from '../../context/pictureContext';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'white',
-  },
-  button: {
-    alignSelf: 'center',
-  },
-  googleButton: {
-    width: 192,
-    height: 48,
-    marginTop: 10,
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    height: '100%',
-  },
-  linkText: {
-    textDecorationLine: 'underline',
-    alignSelf: 'center',
-    marginTop: 20,
-  },
-});
 
 interface UploadPictureProps {
   history: History;

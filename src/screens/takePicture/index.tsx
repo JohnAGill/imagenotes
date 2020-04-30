@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { RNCamera, Constants } from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 import { History } from 'history';
 import { PictureContext } from '../../context/pictureContext';
+import Loading from '../../components/loading';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,6 +41,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
   },
+  loadingContainer: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
 });
 
 interface TakePictureProps {
@@ -52,13 +59,18 @@ type CameraType = {
 
 export default (props: TakePictureProps) => {
   const { addPicture } = useContext(PictureContext);
+  const [loading, setLoading] = useState<boolean>(false);
   const takePicture = async (camera: RNCamera): Promise<void> => {
+    setLoading(true);
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     addPicture(data.uri);
+    setLoading(false);
     return props.history.push('/viewPicture');
   };
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       <View style={styles.container}>
