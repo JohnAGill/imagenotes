@@ -2,8 +2,9 @@ import React, { createContext, useState, ReactNode } from 'react';
 import superagent from 'superagent';
 import _ from 'lodash';
 import { graphql } from 'react-relay';
-import fetchGraphQL from '../fetchGraphQL';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
+import fetchGraphQL from '../fetchGraphQL';
 
 type Location = {
   x: number;
@@ -58,7 +59,7 @@ export const NotesContext = createContext<NotesContextType>({
 
 const NotesProviderText = ({ children }: NotesProvider) => {
   const [note, setNote] = useState<string>('');
-  const [notes, setNotes] = useState<Array<NoteType>>([]);
+  const [notes, setNotes] = useState<any>([]);
   const [location, setLocation] = useState<Location>({ x: 0, y: 0 });
   const [noteToEdit, setNoteEdit] = useState<any>(null);
   const updateNote = (value: string) => {
@@ -80,7 +81,7 @@ const NotesProviderText = ({ children }: NotesProvider) => {
 
   const saveNote = async (noteToSave: any, uid: string | undefined) => {
     try {
-      const image = await superagent
+      await superagent
         .post('https://api.cloudinary.com/v1_1/dukb3cxun/upload')
         .field('upload_preset', 'imagenotes')
         .field('file', {
@@ -91,7 +92,6 @@ const NotesProviderText = ({ children }: NotesProvider) => {
         .end(async (error: any, response: any) => {
           const { url } = response.body;
           const id = uuid();
-          const id2 = uuid();
           const noteToSend = {
             picture: url,
             uid: id,
@@ -102,7 +102,7 @@ const NotesProviderText = ({ children }: NotesProvider) => {
               y: noteObject.location.y,
               order: noteObject.index,
               note_uid: id,
-              uid: id2,
+              uid: uuid(),
             })),
           };
           try {

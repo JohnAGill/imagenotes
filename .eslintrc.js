@@ -49,5 +49,8 @@ module.exports = {
 			},
 		],
 		'import/no-absolute-path': 0,
+		'no-shadow': 0,
+		'react/destructuring-assignment': 0,
+		'@typescript-eslint/explicit-function-return-type': 0,
 	},
 };

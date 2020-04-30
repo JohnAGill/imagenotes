@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { Text } from 'native-base';
 
-import _ from 'lodash';
 import { NoteType } from '../../context/notesContext';
 
 interface NoteProps {

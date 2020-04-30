@@ -4,7 +4,6 @@ import { Header, Body, Title, Textarea, Button, Text } from 'native-base';
 
 // @ts-ignore
 import DoneButton from 'react-native-keyboard-done-button';
-import _ from 'lodash';
 import { History } from 'history';
 import { NotesContext } from '../../context/notesContext';
 

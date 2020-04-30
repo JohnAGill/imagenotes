@@ -11,6 +11,7 @@ import { History } from 'history';
 import environment from '../../RelayEnvironment';
 import DisplayNote from '../../components/displayNote';
 import { UserContext } from '../../context/userContext';
+import Loading from '../../components/loading';
 
 const diemnsions = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -41,16 +42,17 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
   const { setUserId, user } = useContext(UserContext);
   const [callCount, setCallCount] = useState<number>(0);
   const checkForUser = () => {
-    const currentUser = auth().currentUser;
+    const { currentUser } = auth();
     setUserId(currentUser?.uid);
   };
   if (_.isEmpty(user?.uid) && callCount < 10) {
     checkForUser();
     setCallCount(callCount + 1);
-    return <Text>loading</Text>;
-  } else if (callCount > 10 && _.isEmpty(user?.uid)) {
+    return <Loading />;
+  }
+  if (callCount > 10 && _.isEmpty(user?.uid)) {
     ViewNotesProps.history.push('/');
-    return <Text>loading</Text>;
+    return <Loading />;
   }
   const query = graphql`
     query viewNotesQuery($userId: String) {
@@ -80,10 +82,10 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
           </Card>
         ));
         if (error) {
-          return <Text>Error!</Text>;
+          return <Text>Something went wrong!</Text>;
         }
         if (!props) {
-          return <Text>Loading...</Text>;
+          return <Loading />;
         }
         return (
           <View style={{ display: 'flex', flex: 1 }}>

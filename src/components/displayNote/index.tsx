@@ -3,11 +3,10 @@ import { StyleSheet, View, ImageBackground, TouchableWithoutFeedback } from 'rea
 import Modal from 'react-native-modal';
 
 import _ from 'lodash';
-import { NoteType } from '../../context/notesContext';
-import Note from '../note';
 import { Button, Text, Card } from 'native-base';
+import { NoteType, NotesContext } from '../../context/notesContext';
+import Note from '../note';
 import { PictureContext } from '../../context/pictureContext';
-import { NotesContext } from '../../context/notesContext';
 
 const styles = StyleSheet.create({
   container: {

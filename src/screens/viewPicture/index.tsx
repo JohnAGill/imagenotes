@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import _ from 'lodash';
-import { History } from 'history';
 import { PictureContext } from '../../context/pictureContext';
 import { NotesContext, NoteType } from '../../context/notesContext';
 import Note from '../../components/note';
 import { UserContext } from '../../context/userContext';
+import Loading from '../../components/loading';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,7 +53,9 @@ export default (props: ViewPictureProps) => {
   const { picture } = useContext(PictureContext);
   const { notes, updateNotes, updateLocation, saveNote, setNoteToEdit, updateNoteSave } = useContext(NotesContext);
   const { user } = useContext(UserContext);
-  const [isEdit, setIsEdit] = useState<boolean>(props.history.location.state?.isEdit);
+  const [isEdit] = useState<boolean>(props.history.location.state?.isEdit);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleImagePressed = (e: NativeSyntheticEvent<NativeTouchEvent>): void => {
     updateLocation({ x: e.nativeEvent.locationX, y: e.nativeEvent.locationY });
     return props.history.push('/addNote');
@@ -78,17 +80,25 @@ export default (props: ViewPictureProps) => {
     return props.history.push('/editNote');
   };
 
-  const handleSaveNote = () => {
-    saveNote(
+  const handleSaveNote = async () => {
+    setLoading(true);
+    await saveNote(
       {
         picture: picture,
       },
       user?.uid,
     );
+    setLoading(false);
   };
-  const handleUpdateNote = () => {
-    updateNoteSave();
+  const handleUpdateNote = async () => {
+    setLoading(true);
+    await updateNoteSave();
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -113,7 +123,7 @@ export default (props: ViewPictureProps) => {
                 <Text>Go Back</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.capture} onPress={isEdit ? () => handleUpdateNote() : () => handleSaveNote()}>
-                <Text>Save</Text>
+                <Text>{isEdit ? 'Edit' : 'Save'}</Text>
               </TouchableOpacity>
             </View>
           </ImageBackground>
