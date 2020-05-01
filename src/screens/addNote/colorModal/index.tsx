@@ -30,7 +30,7 @@ export default (props: any) => {
           onColorSelected={(color) => alert(`Color selected: ${color}`)}
           onOldColorSelected={(color) => alert(`Old color selected: ${color}`)}
           style={{ flex: 1 }}
-          //@ts-ignore
+          // @ts-ignore
           sliderComponent={Slider}
           hideSliders
         />
