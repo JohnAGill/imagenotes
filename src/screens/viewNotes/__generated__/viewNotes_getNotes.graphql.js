@@ -20,6 +20,7 @@ export type viewNotes_getNotes = $ReadOnlyArray<{|
     +order: ?number,
     +uid: ?string,
     +note_uid: ?string,
+    +text_color: ?string,
   |}>,
   +$refType: viewNotes_getNotes$ref,
 |}>;
@@ -32,77 +33,84 @@ export type viewNotes_getNotes$key = $ReadOnlyArray<{
 */
 
 const node /*: ReaderFragment*/ = {
+  argumentDefinitions: [],
   kind: 'Fragment',
-  name: 'viewNotes_getNotes',
-  type: 'Notes',
   metadata: {
     plural: true,
   },
-  argumentDefinitions: [],
+  name: 'viewNotes_getNotes',
   selections: [
     {
-      kind: 'ScalarField',
       alias: null,
-      name: 'picture',
       args: null,
+      kind: 'ScalarField',
+      name: 'picture',
       storageKey: null,
     },
     {
-      kind: 'LinkedField',
       alias: null,
-      name: 'notes',
-      storageKey: null,
       args: null,
       concreteType: 'Note',
+      kind: 'LinkedField',
+      name: 'notes',
       plural: true,
       selections: [
         {
-          kind: 'ScalarField',
           alias: null,
+          args: null,
+          kind: 'ScalarField',
           name: 'value',
-          args: null,
           storageKey: null,
         },
         {
-          kind: 'ScalarField',
           alias: null,
+          args: null,
+          kind: 'ScalarField',
           name: 'x',
-          args: null,
           storageKey: null,
         },
         {
-          kind: 'ScalarField',
           alias: null,
+          args: null,
+          kind: 'ScalarField',
           name: 'y',
-          args: null,
           storageKey: null,
         },
         {
-          kind: 'ScalarField',
           alias: null,
+          args: null,
+          kind: 'ScalarField',
           name: 'order',
-          args: null,
           storageKey: null,
         },
         {
-          kind: 'ScalarField',
           alias: null,
+          args: null,
+          kind: 'ScalarField',
           name: 'uid',
-          args: null,
           storageKey: null,
         },
         {
-          kind: 'ScalarField',
           alias: null,
-          name: 'note_uid',
           args: null,
+          kind: 'ScalarField',
+          name: 'note_uid',
+          storageKey: null,
+        },
+        {
+          alias: null,
+          args: null,
+          kind: 'ScalarField',
+          name: 'text_color',
           storageKey: null,
         },
       ],
+      storageKey: null,
     },
   ],
+  type: 'Notes',
 };
 // prettier-ignore
-(node/*: any*/).hash = '0e07c107b88e0b3652d1ca7eb20ed587';
+(node/*: any*/).hash = '56c1983ec38c3f38f98fc7461a194767';
 
 module.exports = node;

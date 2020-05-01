@@ -1,6 +1,5 @@
 /**
  * @flow
- * @relayHash 252049c004de6ad54be2de47c1477515
  */
 
 /* eslint-disable */
@@ -16,6 +15,7 @@ export type NoteInput = {|
   y?: ?number,
   order?: ?number,
   uid?: ?string,
+  text_color?: ?string,
 |};
 export type notesContextUpdateQueryVariables = {|
   notes?: ?$ReadOnlyArray<?NoteInput>
@@ -40,17 +40,15 @@ query notesContextUpdateQuery(
 const node /*: ConcreteRequest*/ = (function () {
   var v0 = [
       {
+        defaultValue: null,
         kind: 'LocalArgument',
         name: 'notes',
         type: '[NoteInput]',
-        defaultValue: null,
       },
     ],
     v1 = [
       {
-        kind: 'ScalarField',
         alias: null,
-        name: 'updateNote',
         args: [
           {
             kind: 'Variable',
@@ -58,31 +56,33 @@ const node /*: ConcreteRequest*/ = (function () {
             variableName: 'notes',
           },
         ],
+        kind: 'ScalarField',
+        name: 'updateNote',
         storageKey: null,
       },
     ];
   return {
-    kind: 'Request',
     fragment: {
-      kind: 'Fragment',
-      name: 'notesContextUpdateQuery',
-      type: 'Query',
-      metadata: null,
       argumentDefinitions: (v0 /*: any*/),
+      kind: 'Fragment',
+      metadata: null,
+      name: 'notesContextUpdateQuery',
       selections: (v1 /*: any*/),
+      type: 'Query',
     },
+    kind: 'Request',
     operation: {
+      argumentDefinitions: (v0 /*: any*/),
       kind: 'Operation',
       name: 'notesContextUpdateQuery',
-      argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/),
     },
     params: {
-      operationKind: 'query',
-      name: 'notesContextUpdateQuery',
       id: null,
-      text: 'query notesContextUpdateQuery(\n  $notes: [NoteInput]\n) {\n  updateNote(notes: $notes)\n}\n',
       metadata: {},
+      name: 'notesContextUpdateQuery',
+      operationKind: 'query',
+      text: 'query notesContextUpdateQuery(\n  $notes: [NoteInput]\n) {\n  updateNote(notes: $notes)\n}\n',
     },
   };
 })();

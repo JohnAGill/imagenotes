@@ -50,6 +50,7 @@ export default ({ note, index, onPress, onLongPress }: NoteProps) => {
         {
           top: note.location.y,
           left: spacingNeeded,
+          borderColor: note.text_color || 'white',
         },
       ]}
       onLongPress={onLongPress ? () => onLongPress(index) : () => null}
@@ -59,7 +60,7 @@ export default ({ note, index, onPress, onLongPress }: NoteProps) => {
         style={{
           textAlign: 'center',
           marginTop: 3,
-          color: 'white',
+          color: note.text_color || 'white',
         }}>
         {!note.display ? index + 1 : note.value}
       </Text>

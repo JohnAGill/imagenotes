@@ -18,6 +18,7 @@ export type NoteType = {
   display: boolean;
   note_uid: string;
   ui: string;
+  text_color: string;
 };
 
 interface NotesContextType {
@@ -26,7 +27,7 @@ interface NotesContextType {
   updateNote: (value: string) => void;
   location: Location;
   updateLocation: (value: Location) => void;
-  addNewNote: (value: string) => void;
+  addNewNote: (value: string, color: string) => void;
   updateNotes: (value: NoteType[]) => void;
   saveNote: (value: any, uid: string | undefined) => void;
   setNoteToEdit: (note: any) => void;
@@ -68,13 +69,14 @@ const NotesProviderText = ({ children }: NotesProvider) => {
   const updateLocation = (coords: Location) => {
     setLocation(coords);
   };
-  const addNewNote = (noteText: string) => {
+  const addNewNote = (noteText: string, color: string) => {
     const newNote = {
       value: noteText,
       location: location,
       display: false,
       index: notes.length,
       note_uid: '',
+      text_color: color,
     };
     setNotes([...notes, newNote]);
   };
@@ -83,6 +85,9 @@ const NotesProviderText = ({ children }: NotesProvider) => {
     try {
       await superagent
         .post('https://api.cloudinary.com/v1_1/dukb3cxun/upload')
+        .set('Access-Control-Allow-Origin', '*')
+        .set('Access-Control-Allow-Methods', 'POST, GET, PUT, OPTIONS, DELETE')
+        .set('Access-Control-Allow-Headers', 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type')
         .field('upload_preset', 'imagenotes')
         .field('file', {
           uri: noteToSave.picture,
@@ -90,8 +95,12 @@ const NotesProviderText = ({ children }: NotesProvider) => {
           name: 'upload.png',
         })
         .end(async (error: any, response: any) => {
+          if (error) {
+            throw error;
+          }
           const { url } = response.body;
           const id = uuid();
+          console.log(notes);
           const noteToSend = {
             picture: url,
             uid: id,
@@ -103,6 +112,7 @@ const NotesProviderText = ({ children }: NotesProvider) => {
               order: noteObject.index,
               note_uid: id,
               uid: uuid(),
+              text_color: noteObject.text_color,
             })),
           };
           try {
@@ -115,7 +125,6 @@ const NotesProviderText = ({ children }: NotesProvider) => {
               note: noteToSend,
             });
           } catch (e) {
-            console.log('here?');
             console.log(e);
           }
         });
@@ -125,8 +134,6 @@ const NotesProviderText = ({ children }: NotesProvider) => {
   };
 
   const updateNoteSave = async () => {
-    console.log('herettt');
-    console.log(notes);
     const notesToSend = _.map(notes, (noteObject: any) => ({
       value: noteObject.value,
       x: noteObject.location.x,
@@ -135,7 +142,6 @@ const NotesProviderText = ({ children }: NotesProvider) => {
       note_uid: noteObject.note_uid,
       uid: noteObject.uid,
     }));
-    console.log(notesToSend);
     try {
       const query = graphql`
         query notesContextUpdateQuery($notes: [NoteInput]) {
@@ -146,7 +152,6 @@ const NotesProviderText = ({ children }: NotesProvider) => {
         notes: notesToSend,
       });
     } catch (e) {
-      console.log('here?');
       console.log(e);
     }
   };
