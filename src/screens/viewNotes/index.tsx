@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, Dimensions } from 'react-native';
-import { View } from 'native-base';
+import { View, Toast } from 'native-base';
 import auth from '@react-native-firebase/auth';
 
 import _ from 'lodash';
@@ -71,6 +71,14 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
     }
   `;
 
+  const showErrorToast = () =>
+    Toast.show({
+      text: 'Could not get notes, please restart app',
+      buttonText: 'Okay',
+      type: 'danger',
+      duration: 10000,
+    });
+
   return (
     <QueryRenderer
       environment={environment}
@@ -83,11 +91,36 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
           </Card>
         ));
         if (error) {
-          return <Text>Something went wrong!</Text>;
+          showErrorToast();
+          return (
+            <View
+              style={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>Something went wrong!</Text>
+            </View>
+          );
         }
         if (!props) {
           return <Loading />;
         }
+        if (_.isEmpty(props?.getNotes)) {
+          return (
+            <View
+              style={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>You have no notes, take a picture or upload one!</Text>
+            </View>
+          );
+        }
+
         return (
           <View style={{ display: 'flex', flex: 1 }}>
             <CardStack verticalThreshold={80} horizontalSwipe={false} loop style={styles.content}>
