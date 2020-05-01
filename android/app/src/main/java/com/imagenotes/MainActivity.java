@@ -1,9 +1,9 @@
 package com.imagenotes;
 
-import com.facebook.react.ReactActivity; 
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 
 public class MainActivity extends ReactActivity {

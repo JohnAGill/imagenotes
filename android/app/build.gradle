@@ -1,12 +1,14 @@
 apply plugin: "com.android.application"
-
-import com.android.build.OutputFile 
+apply plugin: 'com.google.gms.google-services'
+import com.android.build.OutputFile
 
 project.ext.react = [
   bundleInStaging: true,
   devDisabledInStaging: true,
   bundleInRelease: true
 ]
+
+
 
 
 /**
@@ -141,6 +143,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy 'react-native-camera', 'general'
+        multiDexEnabled true
+
     }
     splits {
         abi {
@@ -150,63 +155,47 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    signingConfigs { 
+    signingConfigs {
         release {
           storeFile file("./keyStores/release.keystore")
-          storePassword "DjXZVxafK0ZoaVAAA1/RtDy0F1mWlzjjp8dzOdj+Z2UmvxZZQ6xtA8Qhyb+nGpsnT6yw5X/7GpT/U4e7oQLKdA=="
+          storePassword "ayvVciPx0J1s/XKQQW/OAj61ec0eXAmG4VXLiclod5XmCBGZ1AIkrSC8+FVv7GY+ugqSrcmJLVHDUlNa/IyCVw=="
           keyAlias "release"
-          keyPassword "9RyafV5fr8WNggtng+2JHs/wGQJP82SWnzIiVSqZOXwI39d6kqop1l+nxUkD0E6XW6o5v9lWnAaHMGfpN+RYqQ=="
+          keyPassword "1EB6D+lgIzuYvLrVEuf3vMDLJCnrmZp/1ytWYkBLAkjHSERO0i4+JxUTNFUHScDG+jyq/rwyqcL3vliUZz8WTw=="
         }
- 
+
         staging {
           storeFile file("./keyStores/staging.keystore")
-          storePassword "KBbQlKB1FLfSJtUUhMapG6kIXmXYdqZbR/KL3qrhj434iVhbkNtaUqW2k+4yeUYiDYdOe3/xoMvvaKFUw4uRMQ=="
+          storePassword "Aofwzw8UyJFsNUBlaHituMRZ74YhAQcNT55+zgC/3JMduDgxDll7GQiYzSReCADOQID8fMiZaLIkywQiALe4jw=="
           keyAlias "staging"
-          keyPassword "fiL3XuhFX7x/X10Tq+oH0mc+FdtRiXzu9YGLFeABnYBRUtn8v0ti2D8uzmET/9bUgNd5vezjj/ZLKPCAZRuCIg=="
+          keyPassword "f8+ho+C0PbVNeG5uwHjZHW9kJRPAICRxY9of6b5+m16IH2JQoo8Pv9HzI2Ct8FVJ8nN7zEyqSDsCmho8Bk/cNQ=="
         }
- 
         debug {
           storeFile file("./keyStores/debug.keystore")
-          storePassword "WlezoOmHapxkWmRkdvECx9BQlDerfobKlcYDFAlsUF36cOoC6kNddfBaGNp8jYNWA8Eal2oLX96pkItixD/E7g=="
+          storePassword "b4kGhxN3vdfmBzcXs8jINFTuDlrak6fCOLE929haJZ14hyQmKR9orAyxMeF7DwjCcOEqdZM+zUfHb5VjDdzz2w=="
           keyAlias "debug"
-          keyPassword "aqalrPsCqoU6Txx5VvZDcyAmfg30ZSEB29pElDNFavM6LLAhjQ2QFvUIv7xL73+0Dd7v5V/aCOIgmMfNli/gdA=="
+          keyPassword "/7xCLwSwaw3aHI9fAkdCCv7QiVZoz2O1FjZvHDbFPwFbseS4t2EPZtY1ABxMHIHTqb0qDAXakQftq3BeE3ZG4Q=="
         }
-
-        debug { 
-            signingConfig signingConfigs.debug 
-            resValue "string", "app_name", "imagenotes Debug" 
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            resValue "string", "app_name", "imagenotes Debug"
             applicationIdSuffix ".debug"
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
         }
-    }
-
-    signingConfigs {
-    }
-    buildTypes { 
-        debug {
-        }
-        debug {
-            signingConfig signingConfigs.debug
-        }
-        release { 
-            signingConfig signingConfigs.release 
-            resValue "string", "app_name", "imagenotes"
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        } 
-        staging { 
-            signingConfig signingConfigs.staging 
-            resValue "string", "app_name", "imagenotes Staging" 
+        staging {
+            signingConfig signingConfigs.staging
+            resValue "string", "app_name", "imagenotes Staging"
             applicationIdSuffix ".staging"
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
+        release {
+            signingConfig signingConfigs.release
+            resValue "string", "app_name", "imagenotes"
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+
     }
 
     packagingOptions {
@@ -216,20 +205,6 @@ android {
         pickFirst "lib/x86_64/libc++_shared.so"
     }
 
-    // applicationVariants are e.g. debug, release
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // https://developer.android.com/studio/build/configure-apk-splits.html
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
-
-        }
-    }
 }
 
 dependencies {
@@ -238,6 +213,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+  implementation 'com.android.support:multidex:1.0.3'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

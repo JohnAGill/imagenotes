@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "324497914115",
+    "firebase_url": "https://imagenotes-dev.firebaseio.com",
+    "project_id": "imagenotes-dev",
+    "storage_bucket": "imagenotes-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324497914115:android:9cc81b6e6484988a255136",
+        "android_client_info": {
+          "package_name": "com.exorttech.imagenotes.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324497914115-vpm79ltqp321cstn9bb1q4n4kl717kae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB3Z7cjfNLTmGM92AGu45nCfyNXj61XoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324497914115-vpm79ltqp321cstn9bb1q4n4kl717kae.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "324497914115-egh299esrk0khr8qccvhok603s3maii5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.exorttech.imagenotes.debug"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
