@@ -1,6 +1,5 @@
 /**
  * @flow
- * @relayHash df12bdc12f53f7ee2a87611d9670d5da
  */
 
 /* eslint-disable */
@@ -22,6 +21,7 @@ export type viewNotesQueryResponse = {|
       +order: ?number,
       +uid: ?string,
       +note_uid: ?string,
+      +text_color: ?string,
     |}>,
   |}>
 |};
@@ -44,6 +44,7 @@ query viewNotesQuery(
       order
       uid
       note_uid
+      text_color
     }
   }
 }
@@ -52,18 +53,15 @@ query viewNotesQuery(
 const node /*: ConcreteRequest*/ = (function () {
   var v0 = [
       {
+        defaultValue: null,
         kind: 'LocalArgument',
         name: 'userId',
         type: 'String',
-        defaultValue: null,
       },
     ],
     v1 = [
       {
-        kind: 'LinkedField',
         alias: null,
-        name: 'getNotes',
-        storageKey: null,
         args: [
           {
             kind: 'Variable',
@@ -72,98 +70,108 @@ const node /*: ConcreteRequest*/ = (function () {
           },
         ],
         concreteType: 'Notes',
+        kind: 'LinkedField',
+        name: 'getNotes',
         plural: true,
         selections: [
           {
-            kind: 'ScalarField',
             alias: null,
-            name: 'picture',
             args: null,
+            kind: 'ScalarField',
+            name: 'picture',
             storageKey: null,
           },
           {
-            kind: 'LinkedField',
             alias: null,
-            name: 'notes',
-            storageKey: null,
             args: null,
             concreteType: 'Note',
+            kind: 'LinkedField',
+            name: 'notes',
             plural: true,
             selections: [
               {
-                kind: 'ScalarField',
                 alias: null,
+                args: null,
+                kind: 'ScalarField',
                 name: 'value',
-                args: null,
                 storageKey: null,
               },
               {
-                kind: 'ScalarField',
                 alias: null,
+                args: null,
+                kind: 'ScalarField',
                 name: 'x',
-                args: null,
                 storageKey: null,
               },
               {
-                kind: 'ScalarField',
                 alias: null,
+                args: null,
+                kind: 'ScalarField',
                 name: 'y',
-                args: null,
                 storageKey: null,
               },
               {
-                kind: 'ScalarField',
                 alias: null,
+                args: null,
+                kind: 'ScalarField',
                 name: 'order',
-                args: null,
                 storageKey: null,
               },
               {
-                kind: 'ScalarField',
                 alias: null,
+                args: null,
+                kind: 'ScalarField',
                 name: 'uid',
-                args: null,
                 storageKey: null,
               },
               {
-                kind: 'ScalarField',
                 alias: null,
-                name: 'note_uid',
                 args: null,
+                kind: 'ScalarField',
+                name: 'note_uid',
+                storageKey: null,
+              },
+              {
+                alias: null,
+                args: null,
+                kind: 'ScalarField',
+                name: 'text_color',
                 storageKey: null,
               },
             ],
+            storageKey: null,
           },
         ],
+        storageKey: null,
       },
     ];
   return {
-    kind: 'Request',
     fragment: {
-      kind: 'Fragment',
-      name: 'viewNotesQuery',
-      type: 'Query',
-      metadata: null,
       argumentDefinitions: (v0 /*: any*/),
+      kind: 'Fragment',
+      metadata: null,
+      name: 'viewNotesQuery',
       selections: (v1 /*: any*/),
+      type: 'Query',
     },
+    kind: 'Request',
     operation: {
+      argumentDefinitions: (v0 /*: any*/),
       kind: 'Operation',
       name: 'viewNotesQuery',
-      argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/),
     },
     params: {
-      operationKind: 'query',
-      name: 'viewNotesQuery',
       id: null,
-      text:
-        'query viewNotesQuery(\n  $userId: String\n) {\n  getNotes(userId: $userId) {\n    picture\n    notes {\n      value\n      x\n      y\n      order\n      uid\n      note_uid\n    }\n  }\n}\n',
       metadata: {},
+      name: 'viewNotesQuery',
+      operationKind: 'query',
+      text:
+        'query viewNotesQuery(\n  $userId: String\n) {\n  getNotes(userId: $userId) {\n    picture\n    notes {\n      value\n      x\n      y\n      order\n      uid\n      note_uid\n      text_color\n    }\n  }\n}\n',
     },
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'c38059fba0099803a5929d7d5fbb0d2a';
+(node/*: any*/).hash = 'a990fa7fe39ba6b57787532e76de961e';
 
 module.exports = node;

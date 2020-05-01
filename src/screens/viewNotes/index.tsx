@@ -65,6 +65,7 @@ const ViewNotes = (ViewNotesProps: ViewNotesProps) => {
           order
           uid
           note_uid
+          text_color
         }
       }
     }
@@ -110,6 +111,7 @@ export default createFragmentContainer(ViewNotes, {
         order
         uid
         note_uid
+        text_color
       }
     }
   `,

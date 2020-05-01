@@ -71,6 +71,7 @@ const UserProvider = ({ children }: UserProvider) => {
         uid: user?.uid,
       });
     } catch (error) {
+      console.log(error);
       setLoginError(error.message);
     }
   };

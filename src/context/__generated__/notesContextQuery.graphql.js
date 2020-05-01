@@ -1,6 +1,5 @@
 /**
  * @flow
- * @relayHash b521767b28fd78502857b5f9478bd05c
  */
 
 /* eslint-disable */
@@ -22,6 +21,7 @@ export type NoteInput = {|
   y?: ?number,
   order?: ?number,
   uid?: ?string,
+  text_color?: ?string,
 |};
 export type notesContextQueryVariables = {|
   note?: ?CreateNoteInput
@@ -46,17 +46,15 @@ query notesContextQuery(
 const node /*: ConcreteRequest*/ = (function () {
   var v0 = [
       {
+        defaultValue: null,
         kind: 'LocalArgument',
         name: 'note',
         type: 'CreateNoteInput',
-        defaultValue: null,
       },
     ],
     v1 = [
       {
-        kind: 'ScalarField',
         alias: null,
-        name: 'createNote',
         args: [
           {
             kind: 'Variable',
@@ -64,31 +62,33 @@ const node /*: ConcreteRequest*/ = (function () {
             variableName: 'note',
           },
         ],
+        kind: 'ScalarField',
+        name: 'createNote',
         storageKey: null,
       },
     ];
   return {
-    kind: 'Request',
     fragment: {
-      kind: 'Fragment',
-      name: 'notesContextQuery',
-      type: 'Query',
-      metadata: null,
       argumentDefinitions: (v0 /*: any*/),
+      kind: 'Fragment',
+      metadata: null,
+      name: 'notesContextQuery',
       selections: (v1 /*: any*/),
+      type: 'Query',
     },
+    kind: 'Request',
     operation: {
+      argumentDefinitions: (v0 /*: any*/),
       kind: 'Operation',
       name: 'notesContextQuery',
-      argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/),
     },
     params: {
-      operationKind: 'query',
-      name: 'notesContextQuery',
       id: null,
-      text: 'query notesContextQuery(\n  $note: CreateNoteInput\n) {\n  createNote(note: $note)\n}\n',
       metadata: {},
+      name: 'notesContextQuery',
+      operationKind: 'query',
+      text: 'query notesContextQuery(\n  $note: CreateNoteInput\n) {\n  createNote(note: $note)\n}\n',
     },
   };
 })();

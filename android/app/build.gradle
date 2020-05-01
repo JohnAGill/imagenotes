@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
 import com.android.build.OutputFile
 
 project.ext.react = [
@@ -188,12 +187,15 @@ android {
             applicationIdSuffix ".staging"
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+                      matchingFallbacks = ['release', 'debug']
+
         }
         release {
             signingConfig signingConfigs.release
             resValue "string", "app_name", "imagenotes"
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            matchingFallbacks = ['release', 'debug']
         }
 
     }
@@ -214,6 +216,7 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
   implementation 'com.android.support:multidex:1.0.3'
+    implementation project(':react-native-camera')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -244,3 +247,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

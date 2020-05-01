@@ -5,6 +5,7 @@ input NoteInput {
 	y: Float
 	order: Int
 	uid: String
+	text_color: String
 }
 
 input CreateNoteInput {
@@ -32,6 +33,7 @@ type Note {
 	y: Float
 	order: Int
 	uid: String
+	text_color: String
 }
 
 type User {

@@ -88,24 +88,16 @@ const App = (props: any) => {
 								<View style={styles.container}>
 									<Route exact path='/signUp' component={SignUp} />
 									<Route exact path='/logIn' component={LogIn} />
-									<PrivateRoute exact path='/' component={ViewNotes} />
-									<PrivateRoute
-										exact
-										path='/takePicture'
-										component={TakePicture}
-									/>
-									<PrivateRoute
+									<Route exact path='/' component={ViewNotes} />
+									<Route exact path='/takePicture' component={TakePicture} />
+									<Route
 										exact
 										path='/uploadPicture'
 										component={UploadPicture}
 									/>
-									<PrivateRoute
-										exact
-										path='/viewPicture'
-										component={ViewPicture}
-									/>
-									<PrivateRoute exact path='/addNote' component={AddNote} />
-									<PrivateRoute exact path='/editNote' component={EditNote} />
+									<Route exact path='/viewPicture' component={ViewPicture} />
+									<Route exact path='/addNote' component={AddNote} />
+									<Route exact path='/editNote' component={EditNote} />
 									<View style={styles.nav}>
 										<Link
 											onPress={() => setActiveTab('home')}

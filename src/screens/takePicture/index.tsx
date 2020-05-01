@@ -63,14 +63,16 @@ export default (props: TakePictureProps) => {
   const takePicture = async (camera: RNCamera): Promise<void> => {
     setLoading(true);
     const options = { quality: 0.5, base64: true };
-    const data = await camera.takePictureAsync(options);
-    addPicture(data.uri);
-    setLoading(false);
-    return props.history.push('/viewPicture');
+    try {
+      const data = await camera.takePictureAsync(options);
+      addPicture(data.uri);
+      setLoading(false);
+      return props.history.push('/viewPicture');
+    } catch (e) {
+      console.log(e);
+    }
   };
-  if (loading) {
-    return <Loading />;
-  }
+
   return (
     <>
       <View style={styles.container}>
@@ -78,9 +80,13 @@ export default (props: TakePictureProps) => {
           {({ camera }: CameraType) => {
             return (
               <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={(): Promise<void> => takePicture(camera)} style={styles.capture}>
-                  <Text style={styles.buttonText}> SNAP </Text>
-                </TouchableOpacity>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity onPress={(): Promise<void> => takePicture(camera)} style={styles.capture}>
+                    <Text style={styles.buttonText}> SNAP </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           }}
